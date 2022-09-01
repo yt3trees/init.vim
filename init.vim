@@ -206,6 +206,7 @@ Plug 'justinmk/vim-sneak'
 Plug 'mg979/vim-visual-multi', {'branch': 'master'}
 " fで飛べる単語を着色
 Plug 'unblevable/quick-scope' 
+" 閉じ括弧を補完
 Plug 'cohama/lexima.vim'
 call plug#end()
 
