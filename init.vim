@@ -146,7 +146,7 @@ Plug 'kyazdani42/nvim-web-devicons'
 " エラー表示
 Plug 'folke/trouble.nvim'
 " スクロールバー
-Plug 'petertriho/nvim-scrollbar'
+Plug 'dstein64/nvim-scrollview', { 'branch': 'main' }
 " タブバーの装飾
 Plug 'akinsho/bufferline.nvim', { 'tag': 'v2.*' }
 " メニュー
@@ -284,13 +284,6 @@ EOF
 "-------------------------
 lua << EOF
 require('gitsigns').setup()
-EOF
-
-"-------------------------
-" nvim-scrollbar
-"-------------------------
-lua << EOF
-require('scrollbar').setup()
 EOF
 
 "-------------------------
