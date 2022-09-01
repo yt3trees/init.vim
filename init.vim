@@ -85,8 +85,8 @@ nnoremap <C-w><down> <C-w>-
 noremap <C-j> :tabnext<Enter>
 noremap <C-k> :tabprev<Enter>
 " edgemotion
-noremap <C-down> <Plug>(edgemotion-j)
-noremap <C-up> <Plug>(edgemotion-k)
+noremap <C-j> <Plug>(edgemotion-j)
+noremap <C-k> <Plug>(edgemotion-k)
 " release select
 nnoremap <Esc><Esc> :nohl<CR>
 " サイドバーを表示
@@ -183,6 +183,8 @@ Plug 'sindrets/diffview.nvim'
 Plug 'lewis6991/gitsigns.nvim'
 " カーソルがいる行のコミット情報を表示
 Plug 'rhysd/git-messenger.vim'
+" git blameを表示
+Plug 'APZelos/blamer.nvim'
 " NerdFont
 Plug 'lambdalisue/fern-renderer-nerdfont.vim'
 Plug 'lambdalisue/nerdfont.vim'
@@ -721,6 +723,13 @@ augroup ApplyHighlight
     autocmd!
     autocmd ColorScheme * highlight Sneak ctermfg=8 ctermbg=0
 augroup end
+
+"-------------------------
+" APZelos/blamer.nvim
+"-------------------------
+let g:blamer_enabled = 1
+let g:blamer_delay = 300
+let g:blamer_date_format = '%y/%m/%d %H:%M'
 
 
 "==================================================
