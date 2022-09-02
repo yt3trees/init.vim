@@ -72,10 +72,10 @@ nnoremap s<left> <C-w>h
 noremap s<up> <C-w>k
 noremap s<down> <C-w>j
 noremap s<right> <C-w>l
-"noremap sh <C-w>h
-"noremap sk <C-w>k
-"noremap sj <C-w>j
-"noremap sl <C-w>l
+" noremap sh <C-w>h
+" noremap sk <C-w>k
+" noremap sj <C-w>j
+" noremap sl <C-w>l
 " ウィンドウのサイズ調整
 nnoremap <C-w><left> <C-w><
 nnoremap <C-w><right> <C-w>>
@@ -207,7 +207,7 @@ Plug 'mg979/vim-visual-multi', {'branch': 'master'}
 " fで飛べる単語を着色
 Plug 'unblevable/quick-scope' 
 " 閉じ括弧を補完
-Plug 'cohama/lexima.vim'
+" Plug 'cohama/lexima.vim'
 call plug#end()
 
 
