@@ -82,8 +82,8 @@ nnoremap <C-w><right> <C-w>>
 nnoremap <C-w><up> <C-w>+
 nnoremap <C-w><down> <C-w>-
 " Move tab
-noremap <C-j> :tabnext<Enter>
-noremap <C-k> :tabprev<Enter>
+noremap <C-l> :tabnext<Enter>
+noremap <C-h> :tabprev<Enter>
 " edgemotion
 noremap <C-j> <Plug>(edgemotion-j)
 noremap <C-k> <Plug>(edgemotion-k)
