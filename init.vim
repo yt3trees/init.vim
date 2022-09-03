@@ -20,7 +20,7 @@ set clipboard=unnamed
 " カーソルのある行をハイライトする
 set cursorline
 " 検索した文字をハイライトする
-"set hls
+" set hls
 " 検索時に大文字小文字を無視する
 set ignorecase 
 " 検索時に大文字を含んでいる場合は大文字小文字を区別する
@@ -114,7 +114,8 @@ nmap s <Plug>Sneak_s
 nmap S <Plug>Sneak_S
 nmap f <Plug>Sneak_f
 nmap F <Plug>Sneak_F
-
+" UndoTreeを表示
+nnoremap <leader>u :UndotreeToggle<CR>
 
 "==================================================
 "
@@ -156,7 +157,8 @@ Plug 'RRethy/vim-illuminate'
 " 縦方向移動の補助
 Plug 'haya14busa/vim-edgemotion'
 " 検索時に何個目にマッチしたものかを表示
-Plug 'kevinhwang91/nvim-hlslens'
+" Plug 'kevinhwang91/nvim-hlslens'
+Plug 'rapan931/bistahieversor.nvim'
 " ファイラー
 Plug 'lambdalisue/fern.vim'
 " 自動補完
@@ -208,6 +210,8 @@ Plug 'mg979/vim-visual-multi', {'branch': 'master'}
 Plug 'unblevable/quick-scope' 
 " 閉じ括弧を補完
 " Plug 'cohama/lexima.vim'
+" 変更履歴をツリー表示
+Plug 'mbbill/undotree'
 call plug#end()
 
 
@@ -725,6 +729,33 @@ let g:blamer_enabled = 1
 let g:blamer_delay = 300
 let g:blamer_date_format = '%y/%m/%d %H:%M'
 
+"-------------------------
+" bistahieversor.nvim
+"-------------------------
+lua << EOF
+local bistahieversor = require('bistahieversor')
+
+bistahieversor.setup({ maxcount = 1000, echo_wrapscan = true })
+vim.keymap.set({'n', 'x', 'o'}, 'n', function() bistahieversor.n_and_echo() end)
+vim.keymap.set({'n', 'x', 'o'}, 'N', function() bistahieversor.N_and_echo() end)
+EOF
+
+"-------------------------
+" undotree
+"-------------------------
+if has("persistent_undo")
+   let target_path = expand('$HOME\AppData\Local\nvim\.undodir')
+
+    " create the directory and any parent directories
+    " if the location does not exist.
+    if !isdirectory(target_path)
+        call mkdir(target_path, "p", 0700)
+    endif
+
+    let &undodir=target_path
+    set undofile
+endif
+
 
 "==================================================
 "
@@ -757,6 +788,15 @@ function! RenameCurrentFile()
     redraw!
   endif
 endfunction
+
+"-------------------------
+" フォーカスが当たっているウィンドウのみrelativenumberを有効
+"-------------------------
+augroup numbertoggled
+    autocmd!
+    autocmd BufEnter,FocusGained,InsertLeave,WinEnter	* if &nu && mode() != "i" | set relativenumber	| endif
+    autocmd BufLeave,FocusLost,InsertEnter,WinLeave	* if &nu		  | set nornu		| endif
+augroup END
 
 "-------------------------
 " ビルドインLSPの設定
