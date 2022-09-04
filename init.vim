@@ -704,12 +704,15 @@ if (not status) then return end
 
 bufferline.setup({
   options = {
-    mode = "tabs",
-    separator_style = 'slant',
-    always_show_bufferline = false,
-    show_buffer_close_icons = true,
-    show_close_icon = true,
-    color_icons = true
+     mode = 'tabs',
+     indicator_icon = ' ',
+     separator_style = { '', '' },
+     --tab_size = 0,
+     modified_icon = '',
+     show_buffer_close_icons = true,
+     show_close_icon = true,
+     color_icons = true,
+     always_show_bufferline = false,
   },
 })
 EOF
