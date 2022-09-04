@@ -34,7 +34,8 @@ set encoding=utf-8
 " 読み込む文字コード(文字列のリスト) :UTF-8を試し、だめならShift_JIS
 set fileencodings=utf-8,cp932
 " windowの20%をscrolloffに設定
-autocmd BufRead,BufNewFile,WinEnter * execute "setlocal scrolloff=" . str2nr(string(floor((line('w$') - line('w0')) * 0.20)))
+" autocmd BufRead,BufNewFile,WinEnter * execute "setlocal scrolloff=" . str2nr(string(floor((line('w$') - line('w0')) * 0.20)))
+set scrolloff=10
 " フォントを設定
 set guifont=Iosevka\ Custom\ RD:h11
 " ターミナルでも True Color を使えるようにする
