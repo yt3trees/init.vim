@@ -642,6 +642,7 @@ lua << EOF
 require('github-theme').setup({
     theme_style = "dark",
     comment_style = "NONE",
+    transparent = "true"
 --    colors = {
 --	    bg_search = '#282c34',
 --	}
