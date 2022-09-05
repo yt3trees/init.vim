@@ -18,7 +18,7 @@ set splitright
 " yank した文字列をクリップボードにコピー
 set clipboard=unnamed
 " カーソルのある行をハイライトする
-set cursorline
+" set cursorline
 " 検索した文字をハイライトする
 " set hls
 " 検索時に大文字小文字を無視する
@@ -362,9 +362,9 @@ cmp.setup({
 --  require('lspconfig')['<YOUR_LSP_SERVER>'].setup {
 --    capabilities = capabilities
 --  }
-require'lspconfig'.omnisharp.setup {
-    cmd = { "dotnet", "/path/to/omnisharp/OmniSharp.dll" },
-    }
+-- require'lspconfig'.omnisharp.setup {
+--    cmd = { "dotnet", "/path/to/omnisharp/OmniSharp.dll" },
+--    }
 EOF
 
 "-------------------------
@@ -643,10 +643,16 @@ lua << EOF
 require('github-theme').setup({
     theme_style = "dark",
     comment_style = "NONE",
-    transparent = "true"
+    transparent = "true",
 --    colors = {
 --	    bg_search = '#282c34',
 --	}
+    overrides = function(c)
+    return {
+  --   comment = { fg = '#7a8a99' },
+    }
+  end,
+  dev = true,
 })
 EOF
 
