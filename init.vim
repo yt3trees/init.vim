@@ -171,6 +171,7 @@ Plug 'hrsh7th/cmp-cmdline'
 Plug 'hrsh7th/nvim-cmp'
 Plug 'hrsh7th/cmp-vsnip'
 Plug 'hrsh7th/vim-vsnip'
+Plug 'andymass/vim-matchup'
 Plug 'williamboman/mason.nvim' ":Masonでサーバ管理の画面を開く
 Plug 'williamboman/mason-lspconfig.nvim'
 " lspの状態を表示
@@ -327,6 +328,9 @@ cmp.setup({
       -- { name = 'snippy' }, -- For snippy users.
     }, {
       { name = 'buffer' },
+      { name = 'path' },
+      { name = 'git' },
+      { name = 'cmdline' },
     })
   })
 
