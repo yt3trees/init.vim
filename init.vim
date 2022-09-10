@@ -41,7 +41,7 @@ set guifont=Iosevka\ Custom\ RD:h11
 " ターミナルでも True Color を使えるようにする
 set termguicolors
 " ポップアップメニューを半透明化
-set pumblend=30
+set pumblend=10
 
 
 "==================================================
@@ -326,6 +326,10 @@ cmp.setup({
       -- documentation = cmp.config.window.bordered(),
     },
     mapping = cmp.mapping.preset.insert({
+      ["<Up>"] = cmp.mapping.select_prev_item(select_opts),
+      ["<Down>"] = cmp.mapping.select_next_item(select_opts),
+      ["<C-p>"] = cmp.mapping.select_prev_item(select_opts),
+      ["<C-n>"] = cmp.mapping.select_next_item(select_opts),
       ['<C-b>'] = cmp.mapping.scroll_docs(-4),
       ['<C-f>'] = cmp.mapping.scroll_docs(4),
       ['<C-Space>'] = cmp.mapping.complete(),
@@ -392,9 +396,6 @@ cmp.setup({
 --  require('lspconfig')['<YOUR_LSP_SERVER>'].setup {
 --    capabilities = capabilities
 --  }
--- require'lspconfig'.omnisharp.setup {
---    cmd = { "dotnet", "/path/to/omnisharp/OmniSharp.dll" },
---    }
 
 local tabnine = require('cmp_tabnine.config')
 tabnine.setup({
@@ -504,9 +505,6 @@ require('mason-lspconfig').setup_handlers({ function(server)
   require('lspconfig')[server].setup(opt)
 end,
 })
---ensure_installed = { "omnisharp", "omnisharp_mono"}
---local lspconfig = require("lspconfig")
-----lspconfig.omnisharp_mono.setup {}
 require'lspconfig'.omnisharp.setup {
 	cmd = {"OmniSharp.exe","--languageserver"} -- パスを通しておく必要あり
     }
