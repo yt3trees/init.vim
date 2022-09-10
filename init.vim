@@ -299,6 +299,18 @@ EOF
 lua << EOF
 local cmp = require'cmp'
 
+local lspkind = require('lspkind')
+local source_mapping = {
+	buffer = "[Buffer]",
+	nvim_lsp = "[LSP]",
+	nvim_lua = "[Lua]",
+	vsnip = "[Vsnip]",
+	cmp_tabnine = "[TN]",
+	path = "[Path]",
+	git = "[Git]",
+	cmdline = "[Cmdline]",
+}
+
 cmp.setup({
     snippet = {
     -- REQUIRED - you must specify a snippet engine
@@ -318,7 +330,7 @@ cmp.setup({
       ['<C-f>'] = cmp.mapping.scroll_docs(4),
       ['<C-Space>'] = cmp.mapping.complete(),
       ['<C-e>'] = cmp.mapping.abort(),
-      ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+      ['<CR>'] = cmp.mapping.confirm({ select = false }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
     }),
     sources = cmp.config.sources({
       { name = 'nvim_lsp' },
@@ -326,12 +338,26 @@ cmp.setup({
       -- { name = 'luasnip' }, -- For luasnip users.
       -- { name = 'ultisnips' }, -- For ultisnips users.
       -- { name = 'snippy' }, -- For snippy users.
-    }, {
       { name = 'buffer' },
       { name = 'path' },
       { name = 'git' },
       { name = 'cmdline' },
-    })
+      { name = 'cmp_tabnine' },
+    }),
+    formatting = {
+	format = function(entry, vim_item)
+	    vim_item.kind = lspkind.presets.default[vim_item.kind]
+	    local menu = source_mapping[entry.source.name]
+		if entry.source.name == 'cmp_tabnine' then
+		    if entry.completion_item.data ~= nil and entry.completion_item.data.detail ~= nil then
+			menu = entry.completion_item.data.detail .. ' ' .. menu
+		    end
+			vim_item.kind = ''
+		end
+	    vim_item.menu = menu
+	return vim_item
+	end
+    },
   })
 
   -- Set configuration for specific filetype.
@@ -369,6 +395,21 @@ cmp.setup({
 -- require'lspconfig'.omnisharp.setup {
 --    cmd = { "dotnet", "/path/to/omnisharp/OmniSharp.dll" },
 --    }
+
+local tabnine = require('cmp_tabnine.config')
+tabnine.setup({
+	max_lines = 1000,
+	max_num_results = 20,
+	sort = true,
+	run_on_every_keystroke = true,
+	snippet_placeholder = '..',
+	ignored_file_types = { 
+		-- default is not to ignore
+		-- uncomment to ignore in lua:
+		-- lua = true
+	},
+	show_prediction_strength = false
+})
 EOF
 
 "-------------------------
@@ -461,7 +502,14 @@ require('mason-lspconfig').setup_handlers({ function(server)
     )
   }
   require('lspconfig')[server].setup(opt)
-end })
+end,
+})
+--ensure_installed = { "omnisharp", "omnisharp_mono"}
+--local lspconfig = require("lspconfig")
+----lspconfig.omnisharp_mono.setup {}
+require'lspconfig'.omnisharp.setup {
+	cmd = {"OmniSharp.exe","--languageserver"} -- パスを通しておく必要あり
+    }
 EOF
 
 "-------------------------
@@ -505,55 +553,6 @@ EOF
 "-------------------------
 lua << EOF
 require'alpha'.setup(require'alpha.themes.dashboard'.config)
-EOF
-
-"-------------------------
-" tabnine
-"-------------------------
-lua << EOF
-local tabnine = require('cmp_tabnine.config')
-tabnine.setup({
-	max_lines = 1000,
-	max_num_results = 20,
-	sort = true,
-	run_on_every_keystroke = true,
-	snippet_placeholder = '..',
-	ignored_file_types = { 
-		-- default is not to ignore
-		-- uncomment to ignore in lua:
-		-- lua = true
-	},
-	show_prediction_strength = false
-})
-local lspkind = require('lspkind')
-
-local source_mapping = {
-	buffer = "[Buffer]",
-	nvim_lsp = "[LSP]",
-	nvim_lua = "[Lua]",
-	cmp_tabnine = "[TN]",
-	path = "[Path]",
-}
-
-require'cmp'.setup {
-	sources = {
-		{ name = 'cmp_tabnine' },
-	},
-	formatting = {
-		format = function(entry, vim_item)
-			vim_item.kind = lspkind.presets.default[vim_item.kind]
-			local menu = source_mapping[entry.source.name]
-			if entry.source.name == 'cmp_tabnine' then
-				if entry.completion_item.data ~= nil and entry.completion_item.data.detail ~= nil then
-					menu = entry.completion_item.data.detail .. ' ' .. menu
-				end
-				vim_item.kind = ''
-			end
-			vim_item.menu = menu
-			return vim_item
-		end
-	},
-}
 EOF
 
 "-------------------------
@@ -847,4 +846,3 @@ augroup END
 --  autocmd CursorHold,CursorHoldI * lua vim.lsp.buf.document_highlight()
 --  autocmd CursorMoved,CursorMovedI * lua vim.lsp.buf.clear_references()
 EOF
-
