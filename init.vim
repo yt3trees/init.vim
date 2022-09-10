@@ -13,10 +13,18 @@ set smartindent
 set shiftwidth=4
 " Tabキーで挿入するスペースの数
 set softtabstop=4
+" タブをスペースに置き換える
+set expandtab
 " 画面を縦分割する際に右に開く
 set splitright
 " yank した文字列をクリップボードにコピー
 set clipboard=unnamed
+" バッファが編集中でもその他のファイルを開けるように
+set hidden
+" スワップファイルを作らない
+noswapfile
+" バッファが編集中でもその他のファイルを開けるように
+set hidden
 " カーソルのある行をハイライトする
 " set cursorline
 " 検索した文字をハイライトする
@@ -31,10 +39,9 @@ set autochdir
 set nowrap
 " バッファ内で扱う文字コード(文字列)
 set encoding=utf-8
-" 読み込む文字コード(文字列のリスト) :UTF-8を試し、だめならShift_JIS
+" 読み込む文字コード
 set fileencodings=utf-8,utf-16le,sjis,cp932
-" windowの20%をscrolloffに設定
-" autocmd BufRead,BufNewFile,WinEnter * execute "setlocal scrolloff=" . str2nr(string(floor((line('w$') - line('w0')) * 0.20)))
+" windowの上下10行をscrolloffに設定
 set scrolloff=10
 " フォントを設定
 set guifont=Iosevka\ Custom\ RD:h11
@@ -42,6 +49,9 @@ set guifont=Iosevka\ Custom\ RD:h11
 set termguicolors
 " ポップアップメニューを半透明化
 set pumblend=10
+" 不可視文字の可視化
+set list
+set listchars=eol:$,tab:>-,trail:⋅,space:⋅,extends:»,precedes:«,nbsp:%
 
 
 "==================================================
@@ -117,6 +127,7 @@ nmap f <Plug>Sneak_f
 nmap F <Plug>Sneak_F
 " UndoTreeを表示
 nnoremap <leader>u :UndotreeToggle<CR>
+
 
 "==================================================
 "
@@ -461,9 +472,6 @@ EOF
 " indent-blankline.nvim
 "-------------------------
 lua << EOF
-vim.opt.list = true
-vim.opt.listchars:append "space:⋅"
-vim.opt.listchars:append "eol:↴"
 require("indent_blankline").setup {
     space_char_blankline = " ",
     show_current_context = true,
