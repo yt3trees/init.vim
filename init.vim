@@ -312,14 +312,14 @@ local cmp = require'cmp'
 
 local lspkind = require('lspkind')
 local source_mapping = {
-	buffer = "[Buffer]",
-	nvim_lsp = "[LSP]",
-	nvim_lua = "[Lua]",
-	vsnip = "[Vsnip]",
-	cmp_tabnine = "[TN]",
-	path = "[Path]",
-	git = "[Git]",
-	cmdline = "[Cmdline]",
+        buffer      = "[Buffer]",
+        nvim_lsp    = "[LSP]",
+        nvim_lua    = "[Lua]",
+        vsnip       = "[Vsnip]",
+        cmp_tabnine = "[TN]",
+        path        = "[Path]",
+        git         = "[Git]",
+        cmdline     = "[Cmdline]",
 }
 
 cmp.setup({
