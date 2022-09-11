@@ -23,8 +23,6 @@ set clipboard=unnamed
 set hidden
 " スワップファイルを作らない
 set noswapfile
-" バッファが編集中でもその他のファイルを開けるように
-set hidden
 " カーソルのある行をハイライトする
 " set cursorline
 " 検索した文字をハイライトする
