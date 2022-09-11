@@ -110,6 +110,8 @@ noremap <A-down> ddp
 " 次の行に改行
 inoremap <C-CR> <ESC>o
 inoremap <C-S-CR> <ESC>ko
+" バッファをリストから指定して開く
+nnoremap <C-h> :ls<CR>:buf
 " Find files using Telescope command-line sugar.
 nnoremap <leader>ff <cmd>Telescope find_files<CR>
 nnoremap <leader>fg <cmd>Telescope live_grep<CR>
@@ -823,10 +825,12 @@ augroup END
 "-------------------------
 lua << EOF
 -- keyboard shortcut
-vim.keymap.set('n', 'K',  '<cmd>lua vim.lsp.buf.hover()<CR>')	    -- 変数の情報を表示
+--vim.keymap.set('n', 'K',  '<cmd>lua vim.lsp.buf.hover()<CR>')	    -- 変数の情報を表示
 vim.keymap.set('n', 'gf', '<cmd>lua vim.lsp.buf.formatting()<CR>')  -- フォーマットを整える
 vim.keymap.set('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>')  -- 変数を参照している箇所を一覧表示
 vim.keymap.set('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>')  -- 定義ジャンプ
+vim.keymap.set('n', 'gd<Space>', ':split | lua vim.lsp.buf.definition()<CR>', bufopts)  -- 定義ジャンプ(画面分割)
+vim.keymap.set('n', 'gd<CR>', ':vsplit | lua vim.lsp.buf.definition()<CR>', bufopts)    -- 定義ジャンプ(画面分割)
 vim.keymap.set('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>')
 vim.keymap.set('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>')
 vim.keymap.set('n', 'gt', '<cmd>lua vim.lsp.buf.type_definition()<CR>')
@@ -865,13 +869,41 @@ for type, icon in pairs(signs) do
 end
 
 -- diagnosticをhover表示
+-- ref:https://xbgneb0083.hatenablog.com/entry/2022_6_12_avoid_conflict_lsp_hover
 local function on_cursor_hold()
   if vim.lsp.buf.server_ready() then
     vim.diagnostic.open_float()
   end
 end
+
 local diagnostic_hover_augroup_name = "lspconfig-diagnostic"
+local function enable_diagnostics_hover()
+  vim.api.nvim_create_augroup(diagnostic_hover_augroup_name, { clear = true })
+  vim.api.nvim_create_autocmd({ "CursorHold" }, { group = diagnostic_hover_augroup_name, callback = on_cursor_hold })
+end
+
+local function disable_diagnostics_hover()
+  vim.api.nvim_clear_autocmds({ group = diagnostic_hover_augroup_name })
+end
+
 vim.api.nvim_set_option('updatetime', 500)
-vim.api.nvim_create_augroup(diagnostic_hover_augroup_name, { clear = true })
-vim.api.nvim_create_autocmd({ "CursorHold" }, { group = diagnostic_hover_augroup_name, callback = on_cursor_hold })
+enable_diagnostics_hover()
+
+-- diagnosticがある行でホバーをするとすぐにdiagnosticのfloating windowで上書きされてしまうのを阻止する
+-- ホバーをしたら一時的にdiagnosticを開くautocmdを無効化する
+-- これだけだとそれ以降diagnosticが自動表示されなくなってしまうので有効化するautocmdを一回だけ発行して削除する
+local function on_hover()
+  disable_diagnostics_hover()
+
+  vim.lsp.buf.hover()
+
+  vim.api.nvim_create_augroup("lspconfig-enable-diagnostics-hover", { clear = true })
+  -- ウィンドウの切り替えなどのイベントが絡んでくるとおかしくなるかもしれない
+  vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, { group = "lspconfig-enable-diagnostics-hover", callback = function()
+    vim.api.nvim_clear_autocmds({ group = "lspconfig-enable-diagnostics-hover" })
+    enable_diagnostics_hover()
+  end })
+end
+vim.keymap.set('n', 'K', on_hover, opt) -- 変数の情報を表示
+
 EOF
