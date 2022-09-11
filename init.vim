@@ -22,7 +22,7 @@ set clipboard=unnamed
 " バッファが編集中でもその他のファイルを開けるように
 set hidden
 " スワップファイルを作らない
-noswapfile
+set noswapfile
 " バッファが編集中でもその他のファイルを開けるように
 set hidden
 " カーソルのある行をハイライトする
