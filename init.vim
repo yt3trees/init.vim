@@ -51,7 +51,7 @@ set termguicolors
 set pumblend=10
 " 不可視文字の可視化
 set list
-set listchars=eol:$,tab:>-,trail:⋅,space:⋅,extends:»,precedes:«,nbsp:%
+set listchars=eol:¬,tab:>-,trail:⋅,space:⋅,extends:»,precedes:«,nbsp:%
 
 
 "==================================================
@@ -833,8 +833,8 @@ vim.keymap.set('n', 'gt', '<cmd>lua vim.lsp.buf.type_definition()<CR>')
 vim.keymap.set('n', 'gn', '<cmd>lua vim.lsp.buf.rename()<CR>')	    -- 変数名のリネーム
 vim.keymap.set('n', 'ga', '<cmd>lua vim.lsp.buf.code_action()<CR>') -- 実行可能な修正候補を表示
 vim.keymap.set('n', 'ge', '<cmd>lua vim.diagnostic.open_float()<CR>')
-vim.keymap.set('n', 'g]', '<cmd>lua vim.diagnostic.goto_next()<CR>')
-vim.keymap.set('n', 'g[', '<cmd>lua vim.diagnostic.goto_prev()<CR>')
+vim.keymap.set('n', 'gj', '<cmd>lua vim.diagnostic.goto_next()<CR>')
+vim.keymap.set('n', 'gk', '<cmd>lua vim.diagnostic.goto_prev()<CR>')
 -- LSP handlers
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
   vim.lsp.diagnostic.on_publish_diagnostics, { virtual_text = false }
@@ -851,4 +851,27 @@ augroup END
 ]]
 --  autocmd CursorHold,CursorHoldI * lua vim.lsp.buf.document_highlight()
 --  autocmd CursorMoved,CursorMovedI * lua vim.lsp.buf.clear_references()
+
+-- アイコン設定
+local signs = {
+    Error = " ",
+    Warn = " ",
+    Hint = " ",
+    Info = " "
+}
+for type, icon in pairs(signs) do
+    local hl = "DiagnosticSign" .. type
+    vim.fn.sign_define(hl, {text = icon, texthl = hl, numhl = hl})
+end
+
+-- diagnosticをhover表示
+local function on_cursor_hold()
+  if vim.lsp.buf.server_ready() then
+    vim.diagnostic.open_float()
+  end
+end
+local diagnostic_hover_augroup_name = "lspconfig-diagnostic"
+vim.api.nvim_set_option('updatetime', 500)
+vim.api.nvim_create_augroup(diagnostic_hover_augroup_name, { clear = true })
+vim.api.nvim_create_autocmd({ "CursorHold" }, { group = diagnostic_hover_augroup_name, callback = on_cursor_hold })
 EOF
