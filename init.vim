@@ -361,18 +361,18 @@ cmp.setup({
       { name = 'cmp_tabnine' },
     }),
     formatting = {
-	format = function(entry, vim_item)
-	    vim_item.kind = lspkind.presets.default[vim_item.kind]
-	    local menu = source_mapping[entry.source.name]
-		if entry.source.name == 'cmp_tabnine' then
-		    if entry.completion_item.data ~= nil and entry.completion_item.data.detail ~= nil then
-			menu = entry.completion_item.data.detail .. ' ' .. menu
-		    end
-			vim_item.kind = ''
-		end
-	    vim_item.menu = menu
-	return vim_item
-	end
+    format = function(entry, vim_item)
+        vim_item.kind = lspkind.presets.default[vim_item.kind]
+        local menu = source_mapping[entry.source.name]
+        if entry.source.name == 'cmp_tabnine' then
+            if entry.completion_item.data ~= nil and entry.completion_item.data.detail ~= nil then
+            menu = entry.completion_item.data.detail .. ' ' .. menu
+            end
+            vim_item.kind = ''
+        end
+        vim_item.menu = menu
+    return vim_item
+    end
     },
   })
 
@@ -411,17 +411,17 @@ cmp.setup({
 
 local tabnine = require('cmp_tabnine.config')
 tabnine.setup({
-	max_lines = 1000,
-	max_num_results = 20,
-	sort = true,
-	run_on_every_keystroke = true,
-	snippet_placeholder = '..',
-	ignored_file_types = { 
-		-- default is not to ignore
-		-- uncomment to ignore in lua:
-		-- lua = true
-	},
-	show_prediction_strength = false
+    max_lines = 1000,
+    max_num_results = 20,
+    sort = true,
+    run_on_every_keystroke = true,
+    snippet_placeholder = '..',
+    ignored_file_types = { 
+        -- default is not to ignore
+        -- uncomment to ignore in lua:
+        -- lua = true
+    },
+    show_prediction_strength = false
 })
 EOF
 
@@ -515,7 +515,7 @@ require('mason-lspconfig').setup_handlers({ function(server)
 end,
 })
 require'lspconfig'.omnisharp.setup {
-	cmd = {"OmniSharp.exe","--languageserver"} -- パスを通しておく必要あり
+    cmd = {"OmniSharp.exe","--languageserver"} -- パスを通しておく必要あり
     }
 EOF
 
@@ -526,8 +526,8 @@ lua << EOF
 local neogit = require('neogit')
 neogit.setup {
     integrations = {
-	diffview = true
-	}
+    diffview = true
+    }
     }
 local actions = require("diffview.actions")
 require("diffview").setup({})
@@ -655,8 +655,8 @@ require('github-theme').setup({
     comment_style = "NONE",
     transparent = "true",
 --    colors = {
---	    bg_search = '#282c34',
---	}
+--        bg_search = '#282c34',
+--    }
     overrides = function(c)
     return {
   --   comment = { fg = '#7a8a99' },
@@ -815,8 +815,8 @@ endfunction
 "-------------------------
 augroup numbertoggled
     autocmd!
-    autocmd BufEnter,FocusGained,InsertLeave,WinEnter	* if &nu && mode() != "i" | set relativenumber	| endif
-    autocmd BufLeave,FocusLost,InsertEnter,WinLeave	* if &nu		  | set nornu		| endif
+    autocmd BufEnter,FocusGained,InsertLeave,WinEnter   * if &nu && mode() != "i"   | set relativenumber    | endif
+    autocmd BufLeave,FocusLost,InsertEnter,WinLeave     * if &nu                    | set nornu             | endif
 augroup END
 
 "-------------------------
@@ -824,7 +824,7 @@ augroup END
 "-------------------------
 lua << EOF
 -- keyboard shortcut
---vim.keymap.set('n', 'K',  '<cmd>lua vim.lsp.buf.hover()<CR>')	    -- 変数の情報を表示
+--vim.keymap.set('n', 'K',  '<cmd>lua vim.lsp.buf.hover()<CR>')        -- 変数の情報を表示
 vim.keymap.set('n', 'gf', '<cmd>lua vim.lsp.buf.formatting()<CR>')  -- フォーマットを整える
 vim.keymap.set('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>')  -- 変数を参照している箇所を一覧表示
 vim.keymap.set('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>')  -- 定義ジャンプ
@@ -833,7 +833,7 @@ vim.keymap.set('n', 'gd<CR>', ':vsplit | lua vim.lsp.buf.definition()<CR>', bufo
 vim.keymap.set('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>')
 vim.keymap.set('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>')
 vim.keymap.set('n', 'gt', '<cmd>lua vim.lsp.buf.type_definition()<CR>')
-vim.keymap.set('n', 'gn', '<cmd>lua vim.lsp.buf.rename()<CR>')	    -- 変数名のリネーム
+vim.keymap.set('n', 'gn', '<cmd>lua vim.lsp.buf.rename()<CR>')        -- 変数名のリネーム
 vim.keymap.set('n', 'ga', '<cmd>lua vim.lsp.buf.code_action()<CR>') -- 実行可能な修正候補を表示
 vim.keymap.set('n', 'ge', '<cmd>lua vim.diagnostic.open_float()<CR>')
 vim.keymap.set('n', 'gj', '<cmd>lua vim.diagnostic.goto_next()<CR>')
