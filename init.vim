@@ -7,15 +7,6 @@
 set number
 " マウスを有効化
 set mouse=a
-" プログラミング言語に合わせて適切にインデントを自動挿入
-set smartindent
-" 各コマンドやsmartindentで挿入する空白の量
-set shiftwidth=4
-" Tabキーで挿入するスペースの数
-set tabstop=4
-set softtabstop=4
-" タブをスペースに置き換える
-set expandtab
 " 画面を縦分割する際に右に開く
 set splitright
 " yank した文字列をクリップボードにコピー
@@ -26,8 +17,6 @@ set hidden
 set noswapfile
 " カーソルのある行をハイライトする
 " set cursorline
-" 検索した文字をハイライトする
-" set hls
 " 検索時に大文字小文字を無視する
 set ignorecase 
 " 検索時に大文字を含んでいる場合は大文字小文字を区別する
@@ -51,6 +40,32 @@ set pumblend=10
 " 不可視文字の可視化
 set list
 set listchars=eol:¬,tab:>-,trail:⋅,space:⋅,extends:»,precedes:«,nbsp:%
+" 自動インデントやコマンドインデントの幅
+set shiftwidth=4
+" Tabキーで挿入するスペースの数
+set softtabstop=4
+" 何個分のスペースで1つのタブとしてカウントするか
+set tabstop=4
+" プログラミング言語に合わせて適切にインデントを自動挿入
+set smartindent
+" タブをスペースに置き換える
+if $USERNAME == 'yatfo'
+    set expandtab
+endif
+" ファイルタイプに合わせたインデントを利用
+filetype plugin on
+filetype indent on
+autocmd FileType cs                 setlocal shiftwidth=4 softtabstop=4 tabstop=4
+autocmd FileType sql                setlocal shiftwidth=4 softtabstop=4 tabstop=4 noexpandtab
+autocmd FileType javascript         setlocal shiftwidth=2 softtabstop=2 tabstop=2
+autocmd FileType typescript         setlocal shiftwidth=2 softtabstop=2 tabstop=2
+autocmd FileType javascriptreact    setlocal shiftwidth=2 softtabstop=2 tabstop=2
+autocmd FileType typescriptreact    setlocal shiftwidth=2 softtabstop=2 tabstop=2
+autocmd FileType html               setlocal shiftwidth=2 softtabstop=2 tabstop=2
+autocmd FileType css                setlocal shiftwidth=2 softtabstop=2 tabstop=2
+autocmd FileType scss               setlocal shiftwidth=2 softtabstop=2 tabstop=2
+autocmd FileType json               setlocal shiftwidth=4 softtabstop=4 tabstop=4 expandtab
+autocmd FileType markdown           setlocal shiftwidth=4 softtabstop=4 tabstop=4 expandtab
 
 
 "==================================================
