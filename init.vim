@@ -14,6 +14,8 @@ set shiftwidth=4
 " Tabキーで挿入するスペースの数
 set tabstop=4
 set softtabstop=4
+" タブをスペースに置き換える
+set expandtab
 " 画面を縦分割する際に右に開く
 set splitright
 " yank した文字列をクリップボードにコピー
