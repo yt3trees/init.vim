@@ -143,7 +143,7 @@ autocmd VimEnter * if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
 call plug#begin('/plugged')
 " カラースキーム
 Plug 'projekt0n/github-nvim-theme'
-" ファイルの内容
+" 開いたファイルの内容を見てexpandtab等を自動設定
 Plug 'tpope/vim-sleuth'
 " :helpを日本語化
 Plug 'vim-jp/vimdoc-ja'
