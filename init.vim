@@ -49,23 +49,7 @@ set tabstop=4
 " プログラミング言語に合わせて適切にインデントを自動挿入
 set smartindent
 " タブをスペースに置き換える
-if $USERNAME == 'yatfo'
-    set expandtab
-endif
-" ファイルタイプに合わせたインデントを利用
-filetype plugin on
-filetype indent on
-autocmd FileType cs                 setlocal shiftwidth=4 softtabstop=4 tabstop=4
-autocmd FileType sql                setlocal shiftwidth=4 softtabstop=4 tabstop=4 noexpandtab
-autocmd FileType javascript         setlocal shiftwidth=2 softtabstop=2 tabstop=2
-autocmd FileType typescript         setlocal shiftwidth=2 softtabstop=2 tabstop=2
-autocmd FileType javascriptreact    setlocal shiftwidth=2 softtabstop=2 tabstop=2
-autocmd FileType typescriptreact    setlocal shiftwidth=2 softtabstop=2 tabstop=2
-autocmd FileType html               setlocal shiftwidth=2 softtabstop=2 tabstop=2
-autocmd FileType css                setlocal shiftwidth=2 softtabstop=2 tabstop=2
-autocmd FileType scss               setlocal shiftwidth=2 softtabstop=2 tabstop=2
-autocmd FileType json               setlocal shiftwidth=4 softtabstop=4 tabstop=4 expandtab
-autocmd FileType markdown           setlocal shiftwidth=4 softtabstop=4 tabstop=4 expandtab
+set expandtab
 
 
 "==================================================
@@ -159,6 +143,8 @@ autocmd VimEnter * if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
 call plug#begin('/plugged')
 " カラースキーム
 Plug 'projekt0n/github-nvim-theme'
+" ファイルの内容
+Plug 'tpope/vim-sleuth'
 " :helpを日本語化
 Plug 'vim-jp/vimdoc-ja'
 " 通知
@@ -438,6 +424,31 @@ tabnine.setup({
     },
     show_prediction_strength = false
 })
+EOF
+
+"-------------------------
+" nvim-treesitter
+"-------------------------
+lua << EOF
+require'nvim-treesitter.configs'.setup {
+    ensure_installed = {
+            "c_sharp",
+            "sql",
+            "markdown",
+            "tsx",
+            "python",
+            "json",
+            "html",
+            "css",
+            "scss",
+        },
+    highlight = {
+        enable = true,  -- syntax highlightを有効にする
+--        disable = {     -- 一部の言語では無効にする
+--            'c_sharp',
+--        }
+    },
+}
 EOF
 
 "-------------------------
