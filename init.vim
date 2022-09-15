@@ -127,6 +127,11 @@ nmap f <Plug>Sneak_f
 nmap F <Plug>Sneak_F
 " UndoTreeを表示
 nnoremap <leader>u :UndotreeToggle<CR>
+" treesitter playground
+nnoremap <leader>; :TSPlaygroundToggle<CR>
+nnoremap <leader>: :TSHighlightCapturesUnderCursor<CR>
+nnoremap <leader>' :TSEditQueryUserAfter highlights 
+nnoremap <leader>" :TSEditQuery highlights 
 
 
 "==================================================
@@ -153,8 +158,10 @@ Plug 'rcarriga/nvim-notify'
 Plug 'nvim-lua/plenary.nvim'
 " ファジーファインダー
 Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.0' }
-Plug 'nvim-treesitter/nvim-treesitter',{'merged': ':0'}
 Plug 'nvim-telescope/telescope-file-browser.nvim'
+" シンタックスハイライト
+Plug 'nvim-treesitter/nvim-treesitter',{'merged': ':0'}
+Plug 'nvim-treesitter/playground'
 " ステータスライン
 Plug 'nvim-lualine/lualine.nvim'
 Plug 'kyazdani42/nvim-web-devicons'
@@ -262,6 +269,8 @@ autocmd VimEnter * hi LspReferenceText cterm=inverse gui=inverse
 autocmd VimEnter * hi LspReferenceRead cterm=inverse gui=inverse
 autocmd VimEnter * hi LspReferenceWrite cterm=inverse gui=inverse
 hi link IlluminatedWordText Visual
+hi link IlluminatedWordRead Visual
+hi link IlluminatedWordWrite Visual
 
 "-------------------------
 " zenhan
@@ -932,3 +941,8 @@ end
 vim.keymap.set('n', 'K', on_hover, opt) -- 変数の情報を表示
 
 EOF
+
+"-------------------------
+" ハイライトを上書き設定
+"-------------------------
+hi TSKeyword gui=NONE
