@@ -457,6 +457,9 @@ require'nvim-treesitter.configs'.setup {
 --            'c_sharp',
 --        }
     },
+    matchup = {
+            enable = true,
+        }
 }
 EOF
 
