@@ -949,3 +949,4 @@ EOF
 " ハイライトを上書き設定
 "-------------------------
 hi TSKeyword gui=NONE
+hi TSPunctSpecial guifg=#ffab70
