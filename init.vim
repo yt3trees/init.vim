@@ -444,6 +444,7 @@ require'nvim-treesitter.configs'.setup {
             "c_sharp",
             "sql",
             "markdown",
+            "markdown_inline",
             "tsx",
             "python",
             "json",

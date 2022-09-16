@@ -11,5 +11,14 @@
 ] @text.title
 
 ; 引用箇所全体をコメントと同じ色にする
-(block_quote) @comment
-(block_quote_marker) @comment
+[
+  (block_quote)
+  (block_quote_marker)
+] @comment
+
+(list_item
+  (list_marker_minus)
+  (task_list_marker_checked)
+  (paragraph)
+) @comment
+
