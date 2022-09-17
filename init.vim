@@ -235,6 +235,8 @@ Plug 'unblevable/quick-scope'
 " Plug 'cohama/lexima.vim'
 " 変更履歴をツリー表示
 Plug 'mbbill/undotree'
+" レジスタの内容を表示
+Plug 'tversteeg/registers.nvim', { 'branch': 'main' }
 call plug#end()
 
 
