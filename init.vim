@@ -7,6 +7,7 @@
 set number
 " マウスを有効化
 set mouse=a
+set mousemodel=popup
 " 画面を縦分割する際に右に開く
 set splitright
 " yank した文字列をクリップボードにコピー
@@ -945,6 +946,27 @@ end
 vim.keymap.set('n', 'K', on_hover, opt) -- 変数の情報を表示
 
 EOF
+
+"-------------------------
+" 右クリックメニュー
+"-------------------------
+aunmenu PopUp
+vnoremenu PopUp.Cut               "+x
+vnoremenu PopUp.Copy              "+y
+anoremenu PopUp.Paste             "+gP
+vnoremenu PopUp.Paste             "+P
+vnoremenu PopUp.Delete            "_x
+nnoremenu PopUp.Select\ All       ggVG
+vnoremenu PopUp.Select\ All       gg0oG$
+inoremenu PopUp.Select\ All       <C-Home><C-O>VG
+nnoremenu PopUp.Undo              u
+nnoremenu PopUp.Redo              <C-r>
+anoremenu PopUp.-1-               <Nop>
+vnoremenu PopUp.Find\ Text        y<ESC>/<C-r>0<CR>
+nnoremenu PopUp.Goto\ Definition  <cmd>lua vim.lsp.buf.definition()<CR>
+nnoremenu PopUp.Open\ References  <cmd>lua vim.lsp.buf.references()<CR>
+nnoremenu PopUp.Formatting        <cmd>lua vim.lsp.buf.formatting()<CR>
+nnoremenu PopUp.Code\ Action      <cmd>lua vim.lsp.buf.code_action()<CR>
 
 "-------------------------
 " ハイライトを上書き設定
