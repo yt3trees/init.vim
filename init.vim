@@ -868,7 +868,7 @@ augroup END
 lua << EOF
 -- keyboard shortcut
 --vim.keymap.set('n', 'K',  '<cmd>lua vim.lsp.buf.hover()<CR>')        -- 変数の情報を表示
-vim.keymap.set('n', 'gf', '<cmd>lua vim.lsp.buf.formatting()<CR>')  -- フォーマットを整える
+vim.keymap.set('n', 'gf', '<cmd>lua vim.lsp.buf.format()<CR>')  -- フォーマットを整える
 vim.keymap.set('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>')  -- 変数を参照している箇所を一覧表示
 vim.keymap.set('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>')  -- 定義ジャンプ
 vim.keymap.set('n', 'gd<Space>', ':split | lua vim.lsp.buf.definition()<CR>', bufopts)  -- 定義ジャンプ(画面分割)
