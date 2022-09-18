@@ -133,6 +133,11 @@ nnoremap <leader>; :TSPlaygroundToggle<CR>
 nnoremap <leader>: :TSHighlightCapturesUnderCursor<CR>
 nnoremap <leader>' :TSEditQueryUserAfter highlights 
 nnoremap <leader>" :TSEditQuery highlights 
+" vim-quickhl
+nnoremap <Space>m <Plug>(quickhl-manual-this)
+xnoremap <Space>m <Plug>(quickhl-manual-this)
+nnoremap <Space>M <Plug>(quickhl-manual-reset)
+xnoremap <Space>M <Plug>(quickhl-manual-reset)
 
 
 "==================================================
@@ -237,6 +242,8 @@ Plug 'unblevable/quick-scope'
 Plug 'mbbill/undotree'
 " レジスタの内容を表示
 Plug 'tversteeg/registers.nvim', { 'branch': 'main' }
+" 単語をマークする
+Plug 't9md/vim-quickhl'
 call plug#end()
 
 
@@ -954,10 +961,10 @@ EOF
 " 右クリックメニュー
 "-------------------------
 aunmenu PopUp
-vnoremenu PopUp.Cut               "+x
 vnoremenu PopUp.Copy              "+y
 anoremenu PopUp.Paste             "+gP
 vnoremenu PopUp.Paste             "+P
+vnoremenu PopUp.Cut               "+x
 vnoremenu PopUp.Delete            "_x
 nnoremenu PopUp.Select\ All       ggVG
 vnoremenu PopUp.Select\ All       gg0oG$
