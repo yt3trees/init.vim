@@ -968,7 +968,7 @@ anoremenu PopUp.-1-               <Nop>
 vnoremenu PopUp.Find\ Text        y<ESC>/<C-r>0<CR>
 nnoremenu PopUp.Goto\ Definition  <cmd>lua vim.lsp.buf.definition()<CR>
 nnoremenu PopUp.Open\ References  <cmd>lua vim.lsp.buf.references()<CR>
-nnoremenu PopUp.Formatting        <cmd>lua vim.lsp.buf.formatting()<CR>
+nnoremenu PopUp.Formatting        <cmd>lua vim.lsp.buf.format()<CR>
 nnoremenu PopUp.Code\ Action      <cmd>lua vim.lsp.buf.code_action()<CR>
 
 "-------------------------
