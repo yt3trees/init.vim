@@ -866,7 +866,7 @@ endfunction
 augroup numbertoggled
     autocmd!
     autocmd BufEnter,FocusGained,InsertLeave,WinEnter   * if &nu && mode() != "i"   | set relativenumber    | endif
-    autocmd BufLeave,FocusLost,InsertEnter,WinLeave     * if &nu                    | set nornu             | endif
+    autocmd BufLeave,FocusLost,WinLeave                 * if &nu                    | set nornu             | endif
 augroup END
 
 "-------------------------
