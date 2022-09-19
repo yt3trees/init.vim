@@ -110,13 +110,13 @@ noremap <A-down> ddp
 inoremap <C-CR> <ESC>o
 inoremap <C-S-CR> <ESC>ko
 " バッファをリストから指定して開く
-nnoremap <C-b> :ls<CR>:buf
+nnoremap <C-b> <cmd>call quickui#tools#list_buffer('tabedit')<CR>
 " Find files using Telescope command-line sugar.
 nnoremap <leader>ff <cmd>Telescope find_files<CR>
 nnoremap <leader>fg <cmd>Telescope live_grep<CR>
 " nnoremap <leader>fb <cmd>Telescope buffers<CR>
 nnoremap <leader>fh <cmd>Telescope help_tags<CR>
-nnoremap <leader>fb :Telescope file_browser<CR>
+nnoremap <leader>fb <cmd>Telescope file_browser<CR>
 " エラー内容をトグル
 nnoremap <leader>xx <cmd>TroubleToggle<CR>
 " Neo-treeを表示
@@ -244,6 +244,8 @@ Plug 'mbbill/undotree'
 Plug 'tversteeg/registers.nvim', { 'branch': 'main' }
 " 単語をマークする
 Plug 't9md/vim-quickhl'
+" メニュー
+Plug 'skywind3000/vim-quickui'
 call plug#end()
 
 
@@ -826,6 +828,175 @@ if has("persistent_undo")
     let &undodir=target_path
     set undofile
 endif
+
+"-------------------------
+" vim-quickui
+"-------------------------
+" clear all the menus
+call quickui#menu#reset()
+let g:quickui_border_style = 2
+
+" install a 'File' menu, use [text, command] to represent an item.
+call quickui#menu#install('&File', [
+            \ [ "&New File", ':call OpenFile()' ],
+            \ [ "&Open File\tSpace fb", ':Telescope file_browser' ],
+            \ [ "&Close\tCtrl+w c", ':close' ],
+            \ [ "--", '' ],
+            \ [ "&Save\tCtrl+s", ':w'],
+            \ [ "Save &As", ':call SaveasFile()' ],
+            \ [ "Save All\t:wa", ':wa' ],
+            \ [ "Rename", 'call RenameCurrentFile()' ],
+            \ [ "--", '' ],
+            \ [ "Open $&MYVIMRC", ':e $MYVIMRC' ],
+            \ [ "Source $M&YVIMRC", ':source $MYVIMRC' ],
+            \ [ "--", '' ],
+            \ [ "E&xit\t:qa", ':qa' ],
+            \ ])
+
+" items containing tips, tips will display in the cmdline
+call quickui#menu#install('&Edit', [
+            \ [ '&Undo', ':undo' ],
+            \ [ '&Redo', ':redo' ],
+            \ [ '--', ''],
+            \ [ '&Copy', 'y' ],
+            \ [ '&Paste', 'p' ],
+            \ [ '--', ''],
+            \ [ '&Find', ':call SearchFile()' ],
+            \ [ 'R&eplace', ':call ReplaceWord()' ],
+            \ ])
+
+call quickui#menu#install ('&View', [
+            \ [ "&Switch Buffer\tCtrl+b", 'call quickui#tools#list_buffer(''tabedit'')' ],
+            \ [ '--', ''],
+            \ [ "Find &files\tSpace ff", ':Telescope find_files' ],
+            \ [ "File &browser\tSpace fb", ':Telescope file_browser' ],
+            \ [ "Live &grep\tSpace fg", ':Telescope live_grep' ],
+            \ [ '--', ''],
+            \ [ "Open &Neotree\tSpace e", ':Neotree' ],
+            \ [ "Open &Undotree\tSpace u", ':UndotreeToggle' ],
+            \ [ "Open Neog&it\t:Neogit", ':Neogit' ],
+            \ [ "Open &Mason\t:Mason", ':Mason' ],
+            \ [ '--', ''],
+            \ [ "Open T&erminal\t:T", ':T' ],
+            \ [ '--', ''],
+            \ [ "Open TSInstallIn&fo\t:TSInstallInfo", ':TSInstallInfo' ],
+            \ [ "Open TS&Playground\tSpace ;", ':TSPlaygroundToggle' ],
+            \ [ "Edit TS&QueryUser\tSpace '", 'call OpenUserSettingHi()' ],
+            \ [ "Edit TSQuery&Default\tSpace \"", 'call OpenSettingHi()' ],
+            \])
+
+" script inside %{...} will be evaluated and expanded in the string
+call quickui#menu#install("&Option", [
+            \ ['Set &Wrap %{&wrap? "Off":"On"}', 'set wrap!'],
+            \ ['Set &Relativenumber %{&relativenumber? "Off":"On"}', 'set relativenumber!'],
+            \ ['Set &Cursor Line %{&cursorline? "Off":"On"}', 'set cursorline!'],
+            \ ['Set &Spell %{&spell? "Off":"On"}', 'set spell!'],
+            \ ['Set &Paste %{&paste? "Off":"On"}', 'set paste!'],
+            \ ])
+
+" register HELP menu with weight 10000
+call quickui#menu#install('&Help', [
+            \ ["&Cheatsheet", 'help index', ''],
+            \ ['T&ips', 'help tips', ''],
+            \ ['--',''],
+            \ ["&Tutorial", 'help tutor', ''],
+            \ ['&Quick Reference', 'help quickref', ''],
+            \ ['&Summary', 'help summary', ''],
+            \ ], 10000)
+
+" enable to display tips in the cmdline
+let g:quickui_show_tip = 1
+
+" 別名で保存
+function! SaveasFile()
+  exec ':saveas ' quickui#input#open('Enter file name:')
+endfunction
+" ファイルを開く
+function! OpenFile()
+  exec ':e ' quickui#input#open('Enter file name:')
+endfunction
+" ファイル内検索
+function! SearchFile()
+  let @/ = quickui#input#open('Enter search word:')
+  exec 'normal /' . @/ . '\<CR>'
+endfunction
+" 置換
+function! ReplaceWord()
+  let before = quickui#input#open('Enter before word:')
+  let after = quickui#input#open('Enter after word:')
+  let cmd = ':%s/'
+  exec ':%s/' . before . '/' . after . '/gc'
+endfunction
+" Treesitterのハイライト設定を表示
+function! OpenUserSettingHi()
+  let file = quickui#input#open('Enter filetype')
+  exec ':TSEditQueryUserAfter highlights ' . file
+endfunction
+function! OpenSettingHi()
+  let file = quickui#input#open('Enter filetype')
+  exec ':TSEditQuery highlights ' . file
+endfunction
+
+" hit space twice to open menu
+noremap <space><space> :call quickui#menu#open()<CR>
+
+" Custom Theme
+if v:vim_did_enter
+  hi! QuickBG guifg=#c9d1d9 guibg=NONE "#24292e
+  hi! QuickSel gui=bold guifg=#c9d1d9 guibg=#39414a
+  hi! QuickKey gui=bold guifg=#b392f0
+  hi! QuickDefaultBorder guifg=#c9d1d9 guibg=NONE "#24292e
+  hi! QuickDefaultInput guifg=#c9d1d9 guibg=NONE
+else
+  autocmd VimEnter * hi! QuickBG guifg=#c9d1d9 guibg=NONE "#24292e
+  autocmd VimEnter * hi! QuickSel gui=bold guifg=#c9d1d9 guibg=#39414a
+  autocmd VimEnter * hi! QuickKey gui=bold guifg=#b392f0
+  autocmd VimEnter * hi! QuickDefaultBorder guifg=#c9d1d9 guibg=NONE "#24292e
+  autocmd VimEnter * hi! QuickDefaultInput guifg=#c9d1d9 guibg=NONE
+endif
+
+" ノーマルモード時の右クリックコンテキストメニュー
+let ncontent = [
+            \ ["Goto Definition", 'exec "lua vim.lsp.buf.definition()"'],
+            \ ["Open References", 'exec "lua vim.lsp.buf.references()"'],
+            \ ["Formatting", 'exec "lua vim.lsp.buf.format()"'],
+            \ ["Code Action", 'exec "lua vim.lsp.buf.code_action()"'],
+            \ ['-'],
+            \ ["Cut", 'exec "normal dd"'],
+            \ ["Copy", 'exec "normal yy"'],
+            \ ["Paste", 'exec "normal p"'],
+            \ ["Paste from register", ':Registers'],
+            \ ['-'],
+            \ ["Word Highlight\tSpace m", 'exec ":call quickhl#manual#this(''n'')"'],
+            \ ["Reset Highlight\tSpace M", 'exec ":call quickhl#manual#reset()"'],
+            \ ['-'],
+            \ ["Close Window", ':close'],
+            \ ]
+" set cursor to the last position
+let opts = {'index':g:quickui#context#cursor}
+noremap <RightMouse> <cmd>call quickui#context#open(ncontent, opts)<CR>
+nnoremap J <cmd>call quickui#context#open(ncontent, opts)<CR>
+
+" ビジュアルモード時の右クリックコンテキストメニュー
+let vcontent = [
+            \ ["Goto Definition", 'exec "lua vim.lsp.buf.definition()"'],
+            \ ["Open References", 'exec "lua vim.lsp.buf.references()"'],
+            \ ["Formatting", 'exec "lua vim.lsp.buf.format()"'],
+            \ ["Code Action", 'exec "lua vim.lsp.buf.code_action()"'],
+            \ ['-'],
+            \ ["Cut", 'exec "normal d"'],
+            \ ["Copy", 'exec "normal y"'],
+            \ ["Paste", 'exec "normal p"'],
+            \ ["Paste from register", ':Registers'],
+            \ ['-'],
+            \ ["Word Highlight\tSpace m", 'exec ":call quickhl#manual#this(''v'')"'],
+            \ ["Reset Highlight\tSpace M", 'exec ":call quickhl#manual#reset()"'],
+            \ ['-'],
+            \ ["Close Window", ':close'],
+            \ ]
+" set cursor to the last position
+let opts = {'index':g:quickui#context#cursor}
+vnoremap <RightMouse> <cmd>call quickui#context#open(vcontent, opts)<CR>
 
 
 "==================================================
