@@ -200,6 +200,7 @@ Plug 'hrsh7th/vim-vsnip'
 Plug 'andymass/vim-matchup'
 Plug 'williamboman/mason.nvim' ":Masonでサーバ管理の画面を開く
 Plug 'williamboman/mason-lspconfig.nvim'
+Plug 'folke/trouble.nvim'
 " lspの状態を表示
 Plug 'j-hui/fidget.nvim'
 " コメントアウト
@@ -586,6 +587,17 @@ require("diffview").setup({})
 EOF
 
 "-------------------------
+" trouble.nvim
+"-------------------------
+lua << EOF
+  require("trouble").setup {
+    -- your configuration comes here
+    -- or leave it empty to use the default settings
+    -- refer to the configuration section below
+  }
+EOF
+
+"-------------------------
 " stylish.nvim
 "-------------------------
 lua << EOF
@@ -958,7 +970,7 @@ endif
 " ノーマルモード時の右クリックコンテキストメニュー
 let ncontent = [
             \ ["Goto Definition", 'exec "lua vim.lsp.buf.definition()"'],
-            \ ["Open References", 'exec "lua vim.lsp.buf.references()"'],
+            \ ["Open References", 'exec ":TroubleToggle lsp_references"'],
             \ ["Formatting", 'exec "lua vim.lsp.buf.format()"'],
             \ ["Code Action", 'exec "lua vim.lsp.buf.code_action()"'],
             \ ['-'],
@@ -980,7 +992,7 @@ nnoremap J <cmd>call quickui#context#open(ncontent, opts)<CR>
 " ビジュアルモード時の右クリックコンテキストメニュー
 let vcontent = [
             \ ["Goto Definition", 'exec "lua vim.lsp.buf.definition()"'],
-            \ ["Open References", 'exec "lua vim.lsp.buf.references()"'],
+            \ ["Open References", 'exec ":TroubleToggle lsp_references"'],
             \ ["Formatting", 'exec "lua vim.lsp.buf.format()"'],
             \ ["Code Action", 'exec "lua vim.lsp.buf.code_action()"'],
             \ ['-'],
@@ -1047,7 +1059,9 @@ lua << EOF
 -- keyboard shortcut
 --vim.keymap.set('n', 'K',  '<cmd>lua vim.lsp.buf.hover()<CR>')        -- 変数の情報を表示
 vim.keymap.set('n', 'gf', '<cmd>lua vim.lsp.buf.format()<CR>')  -- フォーマットを整える
-vim.keymap.set('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>')  -- 変数を参照している箇所を一覧表示
+--vim.keymap.set('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>')  -- 変数を参照している箇所を一覧表示
+vim.keymap.set('n', 'gr', '<cmd>TroubleToggle lsp_references<CR>') -- 参照を表示(trouble.nvim)
+vim.keymap.set('n', 'gx', '<cmd>TroubleToggle workspace_diagnostics<CR>') -- エラー・ヒントをリスト表示(trouble.nvim)
 vim.keymap.set('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>')  -- 定義ジャンプ
 vim.keymap.set('n', 'gd<Space>', ':split | lua vim.lsp.buf.definition()<CR>', bufopts)  -- 定義ジャンプ(画面分割)
 vim.keymap.set('n', 'gd<CR>', ':vsplit | lua vim.lsp.buf.definition()<CR>', bufopts)    -- 定義ジャンプ(画面分割)
