@@ -1143,6 +1143,16 @@ vim.keymap.set('n', 'K', on_hover, opt) -- 変数の情報を表示
 EOF
 
 "-------------------------
+" Vimの動作ログを取得
+"-------------------------
+command! Profile call s:command_profile()
+function! s:command_profile() abort
+  profile start profile.txt
+  profile func *
+  profile file *
+endfunction
+
+"-------------------------
 " 右クリックメニュー
 "-------------------------
 aunmenu PopUp
