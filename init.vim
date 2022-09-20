@@ -117,8 +117,6 @@ nnoremap <leader>fg <cmd>Telescope live_grep<CR>
 " nnoremap <leader>fb <cmd>Telescope buffers<CR>
 nnoremap <leader>fh <cmd>Telescope help_tags<CR>
 nnoremap <leader>fb <cmd>Telescope file_browser<CR>
-" エラー内容をトグル
-nnoremap <leader>xx <cmd>TroubleToggle<CR>
 " Neo-treeを表示
 nnoremap <leader>e <cmd>Neotree<CR>
 " 検索文字に移動
@@ -891,7 +889,7 @@ call quickui#menu#install ('&View', [
             \ [ '--', ''],
             \ [ "Open T&erminal\t:T", ':T' ],
             \ [ '--', ''],
-            \ [ "Open TSInstallIn&fo\t:TSInstallInfo", ':TSInstallInfo' ],
+            \ [ "Open TSInstallInfo\t:TSInstallInfo", ':TSInstallInfo' ],
             \ [ "Open TS&Playground\tSpace ;", ':TSPlaygroundToggle' ],
             \ [ "Edit TS&QueryUser\tSpace '", 'call OpenUserSettingHi()' ],
             \ [ "Edit TSQuery&Default\tSpace \"", 'call OpenSettingHi()' ],
@@ -969,20 +967,21 @@ endif
 
 " ノーマルモード時の右クリックコンテキストメニュー
 let ncontent = [
-            \ ["Goto Definition", 'exec "lua vim.lsp.buf.definition()"'],
-            \ ["Open References", 'exec ":TroubleToggle lsp_references"'],
-            \ ["Formatting", 'exec "lua vim.lsp.buf.format()"'],
-            \ ["Code Action", 'exec "lua vim.lsp.buf.code_action()"'],
+            \ ["Goto Definition\tgd", 'exec "lua vim.lsp.buf.definition()"'],
+            \ ["Open References\tgr", 'exec ":TroubleToggle lsp_references"'],
+            \ ["Formatting\tgf", 'exec "lua vim.lsp.buf.format()"'],
+            \ ["Open Code Action\tga", 'exec "lua vim.lsp.buf.code_action()"'],
+            \ ["Open Diagnostics\tgx", 'exec ":TroubleToggle document_diagnostics"'],
             \ ['-'],
-            \ ["Cut", 'exec "normal dd"'],
-            \ ["Copy", 'exec "normal yy"'],
-            \ ["Paste", 'exec "normal p"'],
+            \ ["Cut\tdd", 'exec "normal dd"'],
+            \ ["Copy\tyy", 'exec "normal yy"'],
+            \ ["Paste\tp", 'exec "normal p"'],
             \ ["Paste from register", ':Registers'],
             \ ['-'],
-            \ ["Word Highlight\tSpace m", 'exec ":call quickhl#manual#this(''n'')"'],
+            \ ["Highlight word under cursor\tSpace m", 'exec ":call quickhl#manual#this(''n'')"'],
             \ ["Reset Highlight\tSpace M", 'exec ":call quickhl#manual#reset()"'],
             \ ['-'],
-            \ ["Close Window", ':close'],
+            \ ["Close Window\t:close", ':close'],
             \ ]
 " set cursor to the last position
 let opts = {'index':g:quickui#context#cursor}
@@ -991,20 +990,21 @@ nnoremap J <cmd>call quickui#context#open(ncontent, opts)<CR>
 
 " ビジュアルモード時の右クリックコンテキストメニュー
 let vcontent = [
-            \ ["Goto Definition", 'exec "lua vim.lsp.buf.definition()"'],
-            \ ["Open References", 'exec ":TroubleToggle lsp_references"'],
-            \ ["Formatting", 'exec "lua vim.lsp.buf.format()"'],
-            \ ["Code Action", 'exec "lua vim.lsp.buf.code_action()"'],
+            \ ["Goto Definition\tgd", 'exec "lua vim.lsp.buf.definition()"'],
+            \ ["Open References\tgr", 'exec ":TroubleToggle lsp_references"'],
+            \ ["Formatting\tgf", 'exec "lua vim.lsp.buf.format()"'],
+            \ ["Open Code Action\tga", 'exec "lua vim.lsp.buf.code_action()"'],
+            \ ["Open Diagnostics\tgx", 'exec ":TroubleToggle document_diagnostics"'],
             \ ['-'],
-            \ ["Cut", 'exec "normal d"'],
-            \ ["Copy", 'exec "normal y"'],
-            \ ["Paste", 'exec "normal p"'],
+            \ ["Cut\td", 'exec "normal d"'],
+            \ ["Copy\ty", 'exec "normal y"'],
+            \ ["Paste\tp", 'exec "normal p"'],
             \ ["Paste from register", ':Registers'],
             \ ['-'],
-            \ ["Word Highlight\tSpace m", 'exec ":call quickhl#manual#this(''v'')"'],
+            \ ["Highlight word under cursor\tSpace m", 'exec ":call quickhl#manual#this(''v'')"'],
             \ ["Reset Highlight\tSpace M", 'exec ":call quickhl#manual#reset()"'],
             \ ['-'],
-            \ ["Close Window", ':close'],
+            \ ["Close Window\t:close", ':close'],
             \ ]
 " set cursor to the last position
 let opts = {'index':g:quickui#context#cursor}
@@ -1061,7 +1061,7 @@ lua << EOF
 vim.keymap.set('n', 'gf', '<cmd>lua vim.lsp.buf.format()<CR>')  -- フォーマットを整える
 --vim.keymap.set('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>')  -- 変数を参照している箇所を一覧表示
 vim.keymap.set('n', 'gr', '<cmd>TroubleToggle lsp_references<CR>') -- 参照を表示(trouble.nvim)
-vim.keymap.set('n', 'gx', '<cmd>TroubleToggle workspace_diagnostics<CR>') -- エラー・ヒントをリスト表示(trouble.nvim)
+vim.keymap.set('n', 'gx', '<cmd>TroubleToggle document_diagnostics<CR>') -- エラー・ヒントをリスト表示(trouble.nvim)
 vim.keymap.set('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>')  -- 定義ジャンプ
 vim.keymap.set('n', 'gd<Space>', ':split | lua vim.lsp.buf.definition()<CR>', bufopts)  -- 定義ジャンプ(画面分割)
 vim.keymap.set('n', 'gd<CR>', ':vsplit | lua vim.lsp.buf.definition()<CR>', bufopts)    -- 定義ジャンプ(画面分割)
