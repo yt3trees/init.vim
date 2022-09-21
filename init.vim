@@ -1043,6 +1043,25 @@ function! RenameCurrentFile()
   endif
 endfunction
 
+
+"-------------------------
+" Markdownのチェックボックスをトグル
+"-------------------------
+autocmd BufNewFile,BufRead *.md nnoremap <leader>c :ToggleMarkdownCheckbox<CR>
+command! ToggleMarkdownCheckbox call s:toggle_checkbox()
+function! s:toggle_checkbox()
+  let rowText = getline(line('.'))
+  if rowText =~ '-\s\[\s\]'
+    exec ':s/-\s\[\s\]/- \[x\]'
+    exec 'normal $'
+  elseif rowText =~ '-\s\[x\]'
+    exec ':s/-\s\[x\]/- \[ \]'
+    exec 'normal $'
+  else
+    echo 'Checkbox does not exist at cursor line.'
+  endif
+endfunction
+
 "-------------------------
 " フォーカスが当たっているウィンドウのみrelativenumberを有効
 "-------------------------
