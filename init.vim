@@ -599,6 +599,9 @@ end,
 require'lspconfig'.omnisharp.setup {
     cmd = {"OmniSharp.exe","--languageserver"} -- パスを通しておく必要あり
     }
+require'lspconfig'.powershell_es.setup {
+    bundle_path = "~/AppData/Local/nvim-data/mason/packages/powershell-editor-services"
+    }
 EOF
 
 "-------------------------
