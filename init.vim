@@ -244,6 +244,8 @@ Plug 'tversteeg/registers.nvim', { 'branch': 'main' }
 Plug 't9md/vim-quickhl'
 " メニュー
 Plug 'skywind3000/vim-quickui'
+" 入力を開始したコマンドのキーバインドを表示
+Plug 'folke/which-key.nvim'
 call plug#end()
 
 
@@ -621,6 +623,14 @@ EOF
 "-------------------------
 lua << EOF
 require'alpha'.setup(require'alpha.themes.dashboard'.config)
+EOF
+
+"-------------------------
+" folke/which-key.nvim
+"-------------------------
+lua << EOF
+local wk = require("which-key")
+wk.setup()
 EOF
 
 "-------------------------
