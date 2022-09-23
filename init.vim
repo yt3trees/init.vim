@@ -9,6 +9,8 @@ set number
 set mouse=a
 " 画面を縦分割する際に右に開く
 set splitright
+" 画面を水平分割する際に下に開く
+set splitbelow
 " yank した文字列をクリップボードにコピー
 set clipboard=unnamed
 " バッファが編集中でもその他のファイルを開けるように
@@ -187,6 +189,7 @@ Plug 'rapan931/bistahieversor.nvim'
 Plug 'lambdalisue/fern.vim'
 " 自動補完
 Plug 'neovim/nvim-lspconfig'
+Plug 'glepnir/lspsaga.nvim', { 'branch': 'main' }
 Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'hrsh7th/cmp-buffer'
 Plug 'hrsh7th/cmp-path'
@@ -444,6 +447,29 @@ tabnine.setup({
         -- lua = true
     },
     show_prediction_strength = false
+})
+EOF
+
+"-------------------------
+" lspsaga.nvim
+"-------------------------
+lua << EOF
+local saga = require('lspsaga')
+saga.init_lsp_saga({
+  finder_action_keys = {
+    open = "<CR>",
+    vsplit = "v",
+    split = "s",
+    tabe = "t",
+    quit = "q",
+  },
+  definition_action_keys = {
+    edit = '<C-c><CR>',
+    vsplit = '<C-c>v',
+    split = '<C-c>s',
+    tabe = '<C-c>t',
+    quit = 'q',
+},
 })
 EOF
 
