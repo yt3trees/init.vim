@@ -1045,9 +1045,9 @@ endif
 " ノーマルモード時の右クリックコンテキストメニュー
 let ncontent = [
             \ ["Goto Definition\tgd", 'exec "lua vim.lsp.buf.definition()"'],
-            \ ["Open References\tgr", 'exec ":TroubleToggle lsp_references"'],
-            \ ["Formatting\tgf", 'exec "lua vim.lsp.buf.format()"'],
-            \ ["Open Code Action\tga", 'exec "lua vim.lsp.buf.code_action()"'],
+            \ ["Open References\tgr", 'exec "Lspsaga lsp_finder"'],
+            \ ["Formatting\tgf", 'exec "lua vim.lsp.buf.formatting()"'],
+            \ ["Open Code Action\tga", 'exec "Lspsaga code_action"'],
             \ ["Open Diagnostics\tgx", 'exec ":TroubleToggle document_diagnostics"'],
             \ ['-'],
             \ ["Cut\tdd", 'exec "normal dd"'],
@@ -1068,9 +1068,9 @@ nnoremap J <cmd>call quickui#context#open(ncontent, opts)<CR>
 " ビジュアルモード時の右クリックコンテキストメニュー
 let vcontent = [
             \ ["Goto Definition\tgd", 'exec "lua vim.lsp.buf.definition()"'],
-            \ ["Open References\tgr", 'exec ":TroubleToggle lsp_references"'],
-            \ ["Formatting\tgf", 'exec "lua vim.lsp.buf.format()"'],
-            \ ["Open Code Action\tga", 'exec "lua vim.lsp.buf.code_action()"'],
+            \ ["Open References\tgr", 'exec "Lspsaga lsp_finder"'],
+            \ ["Formatting\tgf", 'exec "lua vim.lsp.buf.formatting()"'],
+            \ ["Open Code Action\tga", 'exec "Lspsaga code_action"'],
             \ ["Open Diagnostics\tgx", 'exec ":TroubleToggle document_diagnostics"'],
             \ ['-'],
             \ ["Cut\td", 'exec "normal d"'],
@@ -1153,25 +1153,40 @@ augroup END
 "-------------------------
 lua << EOF
 -- keyboard shortcut
---vim.keymap.set('n', 'K',  '<cmd>lua vim.lsp.buf.hover()<CR>')        -- 変数の情報を表示
-vim.keymap.set('n', 'gf', '<cmd>lua vim.lsp.buf.format()<CR>')  -- フォーマットを整える
---vim.keymap.set('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>')  -- 変数を参照している箇所を一覧表示
-vim.keymap.set('n', 'gr', '<cmd>TroubleToggle lsp_references<CR>') -- 参照を表示(trouble.nvim)
-vim.keymap.set('n', 'gx', '<cmd>TroubleToggle document_diagnostics<CR>') -- エラー・ヒントをリスト表示(trouble.nvim)
-vim.keymap.set('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>')  -- 定義ジャンプ
-vim.keymap.set('n', 'gd<Space>', ':split | lua vim.lsp.buf.definition()<CR>', bufopts)  -- 定義ジャンプ(画面分割)
-vim.keymap.set('n', 'gd<CR>', ':vsplit | lua vim.lsp.buf.definition()<CR>', bufopts)    -- 定義ジャンプ(画面分割)
-vim.keymap.set('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>')
-vim.keymap.set('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>')
-vim.keymap.set('n', 'gt', '<cmd>lua vim.lsp.buf.type_definition()<CR>')
-vim.keymap.set('n', 'gn', '<cmd>lua vim.lsp.buf.rename()<CR>')        -- 変数名のリネーム
-vim.keymap.set('n', 'ga', '<cmd>lua vim.lsp.buf.code_action()<CR>') -- 実行可能な修正候補を表示
-vim.keymap.set('n', 'ge', '<cmd>lua vim.diagnostic.open_float()<CR>')
-vim.keymap.set('n', 'gj', '<cmd>lua vim.diagnostic.goto_next()<CR>')
-vim.keymap.set('n', 'gk', '<cmd>lua vim.diagnostic.goto_prev()<CR>')
--- LSP handlers
+-- 変数の情報を表示
+--vim.keymap.set('n', 'K',  '<cmd>lua vim.lsp.buf.hover()<CR>')
+-- フォーマットを整える
+vim.keymap.set('n', 'gf', '<cmd>lua vim.lsp.buf.formatting()<CR>')
+-- 定義,参照を表示
+vim.keymap.set('n', 'gr', '<cmd>Lspsaga lsp_finder<CR>')
+-- エラー・ヒントをリスト表示
+vim.keymap.set('n', 'gx', '<cmd>TroubleToggle document_diagnostics<CR>')
+-- 定義ジャンプ
+vim.keymap.set('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>')
+-- 定義ジャンプ(水平分割)
+vim.keymap.set('n', 'gds', ':split | lua vim.lsp.buf.definition()<CR>', bufopts)
+-- 定義ジャンプ(垂直分割)
+vim.keymap.set('n', 'gdv', ':vsplit | lua vim.lsp.buf.definition()<CR>', bufopts)
+-- float windowで定義を表示
+vim.keymap.set('n', 'gD', '<cmd>Lspsaga peek_definition<CR>')
+-- 変数名のリネーム
+vim.keymap.set('n', 'gn', '<cmd>Lspsaga rename<CR>')
+-- 実行可能な修正候補を表示
+vim.keymap.set('n', 'ga', '<cmd>Lspsaga code_action<CR>')
+-- 現在の行より下の診断にジャンプ
+vim.keymap.set('n', 'gj', '<cmd>Lspsaga diagnostic_jump_next<CR>')
+-- 現在の行より上の診断にジャンプ
+vim.keymap.set('n', 'gk', '<cmd>Lspsaga diagnostic_jump_prev<CR>')
+-- エラーのみジャンプ
+vim.keymap.set("n", "gJ", function()
+  require("lspsaga.diagnostic").goto_next({ severity = vim.diagnostic.severity.ERROR }) end)
+vim.keymap.set("n", "gK", function()
+  require("lspsaga.diagnostic").goto_prev({ severity = vim.diagnostic.severity.ERROR }) end)
+-- 行の診断を表示
+vim.keymap.set("n", "gs", "<cmd>Lspsaga show_line_diagnostics<CR>")
+-- VirtuelTextの表示制御
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
-  vim.lsp.diagnostic.on_publish_diagnostics, { virtual_text = false }
+  vim.lsp.diagnostic.on_publish_diagnostics, { virtual_text = true }
 )
 -- Reference highlight
 vim.cmd [[
@@ -1202,7 +1217,9 @@ end
 -- ref:https://xbgneb0083.hatenablog.com/entry/2022_6_12_avoid_conflict_lsp_hover
 local function on_cursor_hold()
   if vim.lsp.buf.server_ready() then
-    vim.diagnostic.open_float()
+    -- 無効化
+    -- vim.diagnostic.open_float()
+    --vim.cmd [[Lspsaga show_cursor_diagnostics]]
   end
 end
 
@@ -1225,7 +1242,8 @@ enable_diagnostics_hover()
 local function on_hover()
   disable_diagnostics_hover()
 
-  vim.lsp.buf.hover()
+--  vim.lsp.buf.hover()
+  vim.cmd [[Lspsaga hover_doc]]
 
   vim.api.nvim_create_augroup("lspconfig-enable-diagnostics-hover", { clear = true })
   -- ウィンドウの切り替えなどのイベントが絡んでくるとおかしくなるかもしれない
