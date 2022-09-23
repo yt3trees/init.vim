@@ -457,7 +457,7 @@ require'nvim-treesitter.configs'.setup {
             "sql",
             "markdown",
             "markdown_inline",
-            "vim",
+       --     "vim",
             "tsx",
             "python",
             "json",
