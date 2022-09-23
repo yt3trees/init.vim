@@ -881,9 +881,9 @@ endif
 "-------------------------
 " nvim-dap
 "-------------------------
-lua require('dap-python').setup('~/AppData/Local/nvim-data/mason/packages/debugpy/venv/Scripts/python') -- Masonでインストール
 lua require('dapui').setup()
 lua require("nvim-dap-virtual-text").setup()
+lua require('dap-python').setup('~/AppData/Local/nvim-data/mason/packages/debugpy/venv/Scripts/python') -- Masonでインストール
 
 nnoremap <silent> <F4> <cmd>lua require'dapui'.toggle()<CR>
 nnoremap <silent> <F5> <cmd>lua require'dap'.continue()<CR>
