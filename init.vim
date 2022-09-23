@@ -202,6 +202,11 @@ Plug 'williamboman/mason.nvim' ":Masonでサーバ管理の画面を開く
 Plug 'williamboman/mason-lspconfig.nvim'
 " lspの状態を表示
 Plug 'j-hui/fidget.nvim'
+" デバッグ
+Plug 'mfussenegger/nvim-dap'
+Plug 'rcarriga/nvim-dap-ui'
+Plug 'theHamsta/nvim-dap-virtual-text'
+Plug 'mfussenegger/nvim-dap-python'
 " コメントアウト
 Plug 'numToStr/Comment.nvim'
 " インデントの可視化
@@ -874,6 +879,28 @@ if has("persistent_undo")
 endif
 
 "-------------------------
+" nvim-dap
+"-------------------------
+lua require('dap-python').setup('~/AppData/Local/nvim-data/mason/packages/debugpy/venv/Scripts/python') -- Masonでインストール
+lua require('dapui').setup()
+lua require("nvim-dap-virtual-text").setup()
+
+nnoremap <silent> <F4> <cmd>lua require'dapui'.toggle()<CR>
+nnoremap <silent> <F5> <cmd>lua require'dap'.continue()<CR>
+nnoremap <silent> <F10> <cmd>lua require'dap'.step_over()<CR>
+nnoremap <silent> <F11> <cmd>lua require'dap'.step_into()<CR>
+nnoremap <silent> <F12> <cmd>lua require'dap'.step_out()<CR>
+nnoremap <silent> <Leader>b <cmd>lua require'dap'.toggle_breakpoint()<CR>
+nnoremap <silent> <Leader>B <cmd>lua require'dap'.set_breakpoint(vim.fn.input('Breakpoint condition: '))<CR>
+nnoremap <silent> <Leader>lp <cmd>lua require'dap'.set_breakpoint(nil, nil, vim.fn.input('Log point message(ex:{var}): '))<CR>
+nnoremap <silent> <Leader>dr <cmd>lua require'dap'.repl.open()<CR>
+nnoremap <silent> <Leader>dl <cmd>lua require'dap'.run_last()<CR>
+
+lua << EOF
+vim.fn.sign_define('DapBreakpoint', {text='🛑', texthl='', linehl='', numhl=''})
+EOF
+
+"-------------------------
 " vim-quickui
 "-------------------------
 " clear all the menus
@@ -937,6 +964,19 @@ call quickui#menu#install("&Option", [
             \ ['Set &Spell %{&spell? "Off":"On"}', 'set spell!'],
             \ ['Set &Paste %{&paste? "Off":"On"}', 'set paste!'],
             \ ])
+
+call quickui#menu#install("&Run", [
+            \ ["Start Debugging\t<F5>", ':lua require''dap''.continue()'],
+            \ ["Step Over\t<F10>", ':lua require''dap''.step_over()'],
+            \ ["Step Into\t<F11>", ':lua require''dap''.step_into()'],
+            \ ["Step Out\t<F12>", ':lua require''dap''.step_out()'],
+            \ [ '--', ''],
+            \ ["Toggle Breakpoint\tSpace b", ':lua require''dap''.toggle_breakpoint()'],
+            \ ["Set Breakpoint With Conditions\tSpace B", ':lua require''dap''.set_breakpoint(vim.fn.input(''Breakpoint condition: ''))'],
+            \ ["Logpoints\tSpace lp", ':lua require''dap''.set_breakpoint(nil, nil, vim.fn.input(''Log point message (ex:{var}): ''))'],
+            \ [ '--', ''],
+            \ ["Toggle ui\t<F4>", ':lua require''dapui''.toggle()'],
+            \ ], '<auto>', 'python,ps1,typescriptreact')
 
 " register HELP menu with weight 10000
 call quickui#menu#install('&Help', [
