@@ -200,7 +200,6 @@ Plug 'hrsh7th/vim-vsnip'
 Plug 'andymass/vim-matchup'
 Plug 'williamboman/mason.nvim' ":Masonでサーバ管理の画面を開く
 Plug 'williamboman/mason-lspconfig.nvim'
-Plug 'folke/trouble.nvim'
 " lspの状態を表示
 Plug 'j-hui/fidget.nvim'
 " コメントアウト
