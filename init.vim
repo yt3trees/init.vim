@@ -367,15 +367,39 @@ cmp.setup({
       -- documentation = cmp.config.window.bordered(),
     },
     mapping = cmp.mapping.preset.insert({
-      ["<Up>"] = cmp.mapping.select_prev_item(select_opts),
-      ["<Down>"] = cmp.mapping.select_next_item(select_opts),
-      ["<C-p>"] = cmp.mapping.select_prev_item(select_opts),
-      ["<C-n>"] = cmp.mapping.select_next_item(select_opts),
-      ['<C-b>'] = cmp.mapping.scroll_docs(-4),
-      ['<C-f>'] = cmp.mapping.scroll_docs(4),
-      ['<C-Space>'] = cmp.mapping.complete(),
-      ['<C-e>'] = cmp.mapping.abort(),
-      ['<CR>'] = cmp.mapping.confirm({ select = false }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+        ["<Up>"] = cmp.mapping(function()
+            if cmp.visible() then
+                cmp.select_prev_item()
+            else
+                cmp.complete()
+            end
+        end, { 'i', 'c' }),
+        ["<Down>"] = cmp.mapping(function()
+            if cmp.visible() then
+                cmp.select_next_item()
+            else
+                cmp.complete()
+            end
+        end, { 'i', 'c' }),      
+        ["<C-n>"] = cmp.mapping(function()
+            if cmp.visible() then
+                cmp.select_prev_item()
+            else
+                cmp.complete()
+            end
+        end, { 'i', 'c' }),      
+        ["<C-n>"] = cmp.mapping(function()
+            if cmp.visible() then
+                cmp.select_next_item()
+            else
+                cmp.complete()
+            end
+        end, { 'i', 'c' }),
+        ['<C-b>'] = cmp.mapping.scroll_docs(-4),
+        ['<C-f>'] = cmp.mapping.scroll_docs(4),
+        ['<C-Space>'] = cmp.mapping.complete(),
+        ['<C-e>'] = cmp.mapping.abort(),
+        ['<CR>'] = cmp.mapping.confirm({ select = false }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
     }),
     sources = cmp.config.sources({
       { name = 'nvim_lsp' },
