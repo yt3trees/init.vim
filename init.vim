@@ -384,20 +384,8 @@ cmp.setup({
                 cmp.complete()
             end
         end, { 'i', 'c' }),      
-        ["<C-n>"] = cmp.mapping(function()
-            if cmp.visible() then
-                cmp.select_prev_item()
-            else
-                cmp.complete()
-            end
-        end, { 'i', 'c' }),      
-        ["<C-n>"] = cmp.mapping(function()
-            if cmp.visible() then
-                cmp.select_next_item()
-            else
-                cmp.complete()
-            end
-        end, { 'i', 'c' }),
+        ["<C-p>"] = cmp.mapping.select_prev_item(select_opts),
+        ["<C-n>"] = cmp.mapping.select_next_item(select_opts),
         ['<C-b>'] = cmp.mapping.scroll_docs(-4),
         ['<C-f>'] = cmp.mapping.scroll_docs(4),
         ['<C-Space>'] = cmp.mapping.complete(),
