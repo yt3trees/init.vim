@@ -198,8 +198,11 @@ Plug 'hrsh7th/nvim-cmp'
 Plug 'hrsh7th/cmp-vsnip'
 Plug 'hrsh7th/vim-vsnip'
 Plug 'andymass/vim-matchup'
-Plug 'williamboman/mason.nvim' ":Masonでサーバ管理の画面を開く
+" LSP管理
+Plug 'williamboman/mason.nvim'
 Plug 'williamboman/mason-lspconfig.nvim'
+" 関数のシグネチャヘルプを表示
+Plug 'ray-x/lsp_signature.nvim'
 " lspの状態を表示
 Plug 'j-hui/fidget.nvim'
 " デバッグ
@@ -499,6 +502,13 @@ saga.init_lsp_saga({
     quit = 'q',
 },
 })
+EOF
+
+"-------------------------
+" lsp_signature.nvim
+"-------------------------
+lua << EOF
+require "lsp_signature".setup()
 EOF
 
 "-------------------------
@@ -1295,3 +1305,4 @@ endfunction
 "-------------------------
 hi TSKeyword gui=NONE
 hi TSPunctSpecial guifg=#ffab70
+hi NormalFloat guibg=NONE
