@@ -956,8 +956,21 @@ function! PipInstallInEnv()
   endif
   let &shell='powershell'
   let &shellcmdflag = '-c'
-  let cmd = input('command: ', 'pip install ')
   let env = expand('%:p:h') . '/env' . '/Scripts/Activate.ps1'
+  let cmd = input('command: ', 'pip install ')
+  exec 'split | wincmd j | resize 10 | terminal '. env . ' ; ' . cmd
+endfunction
+
+command! PipCopy call PipCopy()
+function! PipCopy()
+  if !isdirectory(expand('%:p:h') . '/env')
+    echo 'not exists ''./env'''
+    return
+  endif
+  let &shell='powershell'
+  let &shellcmdflag = '-c'
+  let env = expand('%:p:h') . '/env' . '/Scripts/Activate.ps1'
+  let cmd = input('command: ', 'pip freeze > requirements.txt')
   exec 'split | wincmd j | resize 10 | terminal '. env . ' ; ' . cmd
 endfunction
 
