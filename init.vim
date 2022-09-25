@@ -1162,6 +1162,15 @@ function! s:toggle_checkbox()
 endfunction
 
 "-------------------------
+" 開いているバッファのフォルダパスを取得
+"-------------------------
+command! CopyPath call CopyPath()
+function! CopyPath()
+  let @* = expand('%:p:h')
+  echo 'Copied : ' . @*
+endfunction
+
+"-------------------------
 " フォーカスが当たっているウィンドウのみrelativenumberを有効
 "-------------------------
 augroup numbertoggled
