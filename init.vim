@@ -906,9 +906,63 @@ endif
 "-------------------------
 " nvim-dap
 "-------------------------
+" 仮想環境を指定してdap-pythonを起動する
+function! InstallVirtualEnv()
+  if expand('%:e') == 'py'
+    let g:python_env_path = expand('%:p:h') . '/env'
+
+    if !isdirectory(g:python_env_path)
+      lua vim.ui.select({ 'Create', 'Select' }, {
+            \        prompt = 'Python virtual environment not found. Would you like to create or select one?',
+            \        }, function(choice)
+            \          vim.g.exec_choice = choice
+            \        end)
+      if g:exec_choice == 'Create' || g:exec_choice == 'Select'
+        let g:python_env_path = input('VirtualEnvPath: ', g:python_env_path)
+        " Selectの場合はパスが存在するか判定する
+        if g:exec_choice == 'Select'
+          if !isdirectory(g:python_env_path)
+            let e = input('Python virtual environment not found. Create?(y/n)')
+            if e != 'y'
+              echo 'Not created.'
+              return
+            endif
+          endif
+        endif
+        " 仮想環境と各種インストール
+        let upgrade_pip = g:python_env_path . '/Scripts/python.exe -m pip install --upgrade pip'
+        let install_debugpy = 'pip install debugpy'
+        call system('python -m venv ' . g:python_env_path)
+        call system(g:python_env_path . '/Scripts/Activate'. ' && ' . upgrade_pip . ' && ' . install_debugpy)
+        echo ' Created a VirtualEnv.'
+      else
+        echo ' Did Not Create a VirtualEnv.'
+      endif
+    endif
+
+    let g:launch_path = g:python_env_path . '/Scripts/python'
+    lua require('dap-python').setup(vim.g.launch_path)
+  endif
+endfunction
+
+call InstallVirtualEnv()
+
+" pip installコマンド
+command! Pip call PipInstallInEnv()
+function! PipInstallInEnv()
+  if !isdirectory(expand('%:p:h') . '/env')
+    echo 'not exists ''./env'''
+    return
+  endif
+  let &shell='powershell'
+  let &shellcmdflag = '-c'
+  let cmd = input('command: ', 'pip install ')
+  let env = expand('%:p:h') . '/env' . '/Scripts/Activate.ps1'
+  exec 'split | wincmd j | resize 10 | terminal '. env . ' ; ' . cmd
+endfunction
+
 lua require('dapui').setup()
 lua require("nvim-dap-virtual-text").setup()
-lua require('dap-python').setup('~/AppData/Local/nvim-data/mason/packages/debugpy/venv/Scripts/python') -- Masonでインストール
 
 nnoremap <silent> <F4> <cmd>lua require'dapui'.toggle()<CR>
 nnoremap <silent> <F5> <cmd>lua require'dap'.continue()<CR>
@@ -921,9 +975,7 @@ nnoremap <silent> <Leader>lp <cmd>lua require'dap'.set_breakpoint(nil, nil, vim.
 nnoremap <silent> <Leader>dr <cmd>lua require'dap'.repl.open()<CR>
 nnoremap <silent> <Leader>dl <cmd>lua require'dap'.run_last()<CR>
 
-lua << EOF
-vim.fn.sign_define('DapBreakpoint', {text='🛑', texthl='', linehl='', numhl=''})
-EOF
+lua vim.fn.sign_define('DapBreakpoint', {text='🛑', texthl='', linehl='', numhl=''})
 
 "-------------------------
 " vim-quickui
@@ -1118,12 +1170,14 @@ vnoremap <RightMouse> <cmd>call quickui#context#open(vcontent, opts)<CR>
 "-------------------------
 " Powershell or ターミナルを開く
 "-------------------------
-let &shell = has('win32') ? 'powershell' : 'pwsh'
-let &shellcmdflag = '-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.Encoding]::UTF8;'
-let &shellredir = '2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode'
-let &shellpipe = '2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode'
+function! SetShell()
+    let &shell = has('win32') ? 'powershell' : 'pwsh'
+    let &shellcmdflag = '-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.Encoding]::UTF8;'
+    let &shellredir = '2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode'
+    let &shellpipe = '2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode'
+endfunction
 set shellquote= shellxquote=
-command! -nargs=* T split | wincmd j | resize 10 | terminal <args>
+command! -nargs=* T call SetShell() | split | wincmd j | resize 10 | terminal <args>
 autocmd TermOpen * startinsert
 
 "-------------------------
