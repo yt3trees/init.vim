@@ -370,22 +370,22 @@ cmp.setup({
       -- documentation = cmp.config.window.bordered(),
     },
     mapping = cmp.mapping.preset.insert({
-        ["<Up>"] = cmp.mapping(function()
+        ["<up>"] = cmp.mapping.select_prev_item(select_opts),
+        ["<down>"] = cmp.mapping.select_next_item(select_opts),
+        ["<C-p>"] = cmp.mapping(function()
             if cmp.visible() then
                 cmp.select_prev_item()
             else
                 cmp.complete()
             end
         end, { 'i', 'c' }),
-        ["<Down>"] = cmp.mapping(function()
+        ["<C-n>"] = cmp.mapping(function()
             if cmp.visible() then
                 cmp.select_next_item()
             else
                 cmp.complete()
             end
-        end, { 'i', 'c' }),      
-        ["<C-p>"] = cmp.mapping.select_prev_item(select_opts),
-        ["<C-n>"] = cmp.mapping.select_next_item(select_opts),
+        end, { 'i', 'c' }),
         ['<C-b>'] = cmp.mapping.scroll_docs(-4),
         ['<C-f>'] = cmp.mapping.scroll_docs(4),
         ['<C-Space>'] = cmp.mapping.complete(),
