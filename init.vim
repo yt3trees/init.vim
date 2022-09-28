@@ -92,6 +92,11 @@ nnoremap <C-w><left> <C-w><
 nnoremap <C-w><right> <C-w>>
 nnoremap <C-w><up> <C-w>+
 nnoremap <C-w><down> <C-w>-
+" 表示行移動
+nnoremap j gj
+nnoremap k gk
+vnoremap j gj
+vnoremap k gk
 " Move tab
 noremap <C-l> :tabnext<Enter>
 noremap <C-h> :tabprev<Enter>
