@@ -235,6 +235,7 @@ Plug 'lambdalisue/nerdfont.vim'
 Plug 'goolord/alpha-nvim'
 " AI補完
 Plug 'tzachar/cmp-tabnine', { 'do': 'powershell ./install.ps1' }
+Plug 'github/copilot.vim'
 " 補完時にアイコンを表示
 Plug 'onsails/lspkind.nvim'
 " 色コード部分に色を付与
