@@ -854,7 +854,7 @@ if (not status) then return end
 bufferline.setup({
   options = {
      mode = 'tabs',
-     indicator_icon = ' ',
+     indicator = { style = "icon", icon = "▎" },
      separator_style = { '', '' },
      --tab_size = 0,
      modified_icon = '',
