@@ -1,3 +1,4 @@
+;; extends
 ; #をタイトルと同じ色にする
 [
   (atx_h1_marker)
