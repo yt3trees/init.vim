@@ -1410,7 +1410,7 @@ endfunction
 " ハイライトを上書き設定
 "-------------------------
 " 行番号
-hi LineNr guifg=#444c54
+hi LineNr guifg=#6a737d
 hi clear CursorLine
 " TreeSitter
 hi TSKeyword gui=NONE
