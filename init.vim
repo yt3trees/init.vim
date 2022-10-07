@@ -187,6 +187,8 @@ Plug 'akinsho/bufferline.nvim', { 'tag': 'v2.*' }
 Plug 'sunjon/stylish.nvim'
 " カーソルが当たった単語をハイライト
 Plug 'RRethy/vim-illuminate'
+" ブックマーク
+Plug 'MattesGroeger/vim-bookmarks'
 " 縦方向移動の補助
 Plug 'haya14busa/vim-edgemotion'
 " 検索時に何個目にマッチしたものかを表示
@@ -1408,3 +1410,8 @@ endfunction
 hi TSKeyword gui=NONE
 hi TSPunctSpecial guifg=#ffab70
 hi NormalFloat guibg=NONE
+" vim-bookmarks
+highlight BookmarkSign guifg=#157efb
+highlight BookmarkAnnotationSign guifg=#157efb
+highlight BookmarkLine guifg=#157efb
+highlight BookmarkAnnotationLine guifg=#157efb
