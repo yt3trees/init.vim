@@ -69,8 +69,8 @@ inoremap <silent> ｊｋ <Esc>
 " 全選択
 nnoremap <C-a> gg<S-v>G
 " ファイルを保存
-nnoremap <C-s> :w<Return>
-inoremap <C-s> <ESC>:w<Return>
+nnoremap <silent> <C-s> :w<Return>
+inoremap <silent> <C-s> <ESC>:w<Return>
 " タブを追加
 nnoremap te :tabedit<Return>
 " タブを閉じる
@@ -164,6 +164,8 @@ Plug 'tpope/vim-sleuth'
 Plug 'vim-jp/vimdoc-ja'
 " 通知
 Plug 'rcarriga/nvim-notify'
+" UIを置き換え
+Plug 'folke/noice.nvim'
 " Lua用
 Plug 'nvim-lua/plenary.nvim'
 " ファジーファインダー
@@ -825,7 +827,21 @@ require('lualine').setup {
     lualine_a = {'mode'},
     lualine_b = {'branch', 'diff', 'diagnostics'},
     lualine_c = {'filename'},
-    lualine_x = {'encoding', 'fileformat', 'filetype'},
+    lualine_x = {
+      {
+        require("noice.status").message.get,
+        cond = require("noice.status").message.has,
+      },
+      {
+        require("noice.status").mode.get,
+        cond = require("noice.status").mode.has,
+      },
+      {
+        require("noice.status").search.get,
+        cond = require("noice.status").search.has,
+      },
+      'encoding', 'fileformat', 'filetype'
+    },
     lualine_y = {'progress'},
     lualine_z = {'location'}
   },
@@ -864,6 +880,22 @@ bufferline.setup({
      always_show_bufferline = false,
   },
 })
+EOF
+
+"-------------------------
+" nvim-notify
+"-------------------------
+lua << EOF
+require("notify").setup({
+  background_colour = "#000000",
+})
+EOF
+
+"-------------------------
+" noice.nvim
+"-------------------------
+lua << EOF
+--require('noice').setup()
 EOF
 
 "-------------------------
@@ -1118,7 +1150,7 @@ function! OpenSettingHi()
 endfunction
 
 " hit space twice to open menu
-noremap <space><space> :call quickui#menu#open()<CR>
+noremap <silent> <space><space> :call quickui#menu#open()<CR>
 
 " Custom Theme
 if v:vim_did_enter
