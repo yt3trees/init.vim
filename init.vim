@@ -18,7 +18,7 @@ set hidden
 " スワップファイルを作らない
 set noswapfile
 " カーソルのある行をハイライトする
-" set cursorline
+set cursorline
 " 検索時に大文字小文字を無視する
 set ignorecase 
 " 検索時に大文字を含んでいる場合は大文字小文字を区別する
@@ -1407,8 +1407,13 @@ endfunction
 "-------------------------
 " ハイライトを上書き設定
 "-------------------------
+" 行番号
+hi LineNr guifg=#444c54
+hi clear CursorLine
+" TreeSitter
 hi TSKeyword gui=NONE
 hi TSPunctSpecial guifg=#ffab70
+" floating window
 hi NormalFloat guibg=NONE
 " vim-bookmarks
 highlight BookmarkSign guifg=#157efb
