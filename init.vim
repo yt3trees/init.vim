@@ -77,18 +77,6 @@ inoremap <silent> <C-s> <ESC>:w<Return>
 nnoremap te :tabedit<Return>
 " タブを閉じる
 nnoremap tc :tabclose<Return>
-" ウィンドウを分割
-" nnoremap ss :split<Return><C-w>w
-" nnoremap sv :vsplit<Return><C-w>w
-" 他ウィンドウへの移動
-nnoremap s<left> <C-w>h
-noremap s<up> <C-w>k
-noremap s<down> <C-w>j
-noremap s<right> <C-w>l
-" noremap sh <C-w>h
-" noremap sk <C-w>k
-" noremap sj <C-w>j
-" noremap sl <C-w>l
 " ウィンドウのサイズ調整
 nnoremap <C-w><left> <C-w><
 nnoremap <C-w><right> <C-w>>
@@ -107,8 +95,6 @@ noremap <C-j> <Plug>(edgemotion-j)
 noremap <C-k> <Plug>(edgemotion-k)
 " release select
 nnoremap <Esc><Esc> :nohl<CR>
-" サイドバーを表示
-"nnoremap <leader>e <cmd>Fern . -reveal=% -drawer -toggle <Return>
 " ターミナルモードから抜ける
 :tnoremap <Esc> <C-\><C-n>
 " 行を入れ換える
@@ -119,7 +105,7 @@ inoremap <C-CR> <ESC>o
 inoremap <C-S-CR> <ESC>ko
 " バッファをリストから指定して開く
 nnoremap <C-b> <cmd>call quickui#tools#list_buffer('tabedit')<CR>
-" Find files using Telescope command-line sugar.
+" Telescope
 nnoremap <leader>ff <cmd>Telescope find_files<CR>
 nnoremap <leader>fg <cmd>Telescope live_grep<CR>
 " nnoremap <leader>fb <cmd>Telescope buffers<CR>
@@ -185,8 +171,6 @@ Plug 'folke/trouble.nvim'
 Plug 'dstein64/nvim-scrollview', { 'branch': 'main' }
 " タブバーの装飾
 Plug 'akinsho/bufferline.nvim', { 'tag': 'v2.*' }
-" メニュー
-Plug 'sunjon/stylish.nvim'
 " カーソルが当たった単語をハイライト
 Plug 'RRethy/vim-illuminate'
 " ブックマーク
@@ -196,8 +180,6 @@ Plug 'haya14busa/vim-edgemotion'
 " 検索時に何個目にマッチしたものかを表示
 " Plug 'kevinhwang91/nvim-hlslens'
 Plug 'rapan931/bistahieversor.nvim'
-" ファイラー
-Plug 'lambdalisue/fern.vim'
 " 自動補完
 Plug 'neovim/nvim-lspconfig'
 Plug 'glepnir/lspsaga.nvim', { 'branch': 'main' }
@@ -235,7 +217,6 @@ Plug 'rhysd/git-messenger.vim'
 " git blameを表示
 Plug 'APZelos/blamer.nvim'
 " NerdFont
-Plug 'lambdalisue/fern-renderer-nerdfont.vim'
 Plug 'lambdalisue/nerdfont.vim'
 " 起動画面
 Plug 'goolord/alpha-nvim'
@@ -256,8 +237,6 @@ Plug 'justinmk/vim-sneak'
 Plug 'mg979/vim-visual-multi', {'branch': 'master'}
 " fで飛べる単語を着色
 Plug 'unblevable/quick-scope' 
-" 閉じ括弧を補完
-" Plug 'cohama/lexima.vim'
 " 変更履歴をツリー表示
 Plug 'mbbill/undotree'
 " レジスタの内容を表示
@@ -276,22 +255,6 @@ call plug#end()
 " プラグイン詳細設定
 "
 "==================================================
-"-------------------------
-" fern.vim
-"-------------------------
-" NerdFontを設定
-let g:fern#renderer = "nerdfont"
-
-function! s:init_fern() abort
-    " ウィンドウ移動のショートカットと被るためファイル開いてしまわないよう調整
-    nmap <buffer><nowait> sl <C-w>l
-    nmap <buffer><nowait> o <Plug>(fern-action-open:select)
-endfunction
-augroup fern-custom
-  autocmd! *
-  autocmd FileType fern call s:init_fern()
-augroup END
-
 "-------------------------
 " fvim-illuminate
 "-------------------------
@@ -541,6 +504,17 @@ require'nvim-treesitter.configs'.setup {
 }
 EOF
 
+" vscodeの場合はtreesitterを無効化する
+if exists('g:vscode')
+lua << EOF
+require'nvim-treesitter.configs'.setup {
+  highlight = {
+    enable = false,
+  }
+  }
+EOF
+endif
+
 "-------------------------
 " vim-illuminate
 "-------------------------
@@ -661,28 +635,6 @@ lua << EOF
     -- or leave it empty to use the default settings
     -- refer to the configuration section below
   }
-EOF
-
-"-------------------------
-" stylish.nvim
-"-------------------------
-lua << EOF
-vim.cmd [[
-amenu Plugin.Fugitive.GFetch :GFetch | amenu Plugin.Fugitive.GPull :GPull | amenu Plugin.Fugitive.GPush :GPush
-amenu File.Filetype.:q :q | amenu File.Filetype.Two :echo 2 | amenu File.Filetype.Three :echo 3
-amenu Edit.Recent.Foo :echo 'foo' | amenu Edit.Recent.Bar :echo 'bar' | amenu Edit.Recent.Baz :echo 'baz'
-amenu Edit.Diff.Revision_1 :echo 'rev_1' | amenu Edit.Diff.Revision_2 :echo 'rev_2' | amenu Edit.Diff.Revision_3 :echo 'rev_3'
-]]
-
-for i = 1, 16 do
-  vim.cmd('amenu OverflowList.Test_Thing_' .. i .. ' :echo ' .. i)
-end
-vim.api.nvim_set_keymap(
-  'n',
-  '<F1>',
-  "<Cmd>lua require'stylish'.ui_menu(vim.fn.menu_get(''), {kind=menu, prompt = 'Main Menu', experimental_mouse = true}, function(res) print('### ' ..res) end)<CR>",
-  { noremap = true, silent = true }
-)
 EOF
 
 "-------------------------
