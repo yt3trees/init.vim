@@ -784,18 +784,6 @@ require('lualine').setup {
     lualine_b = {'branch', 'diff', 'diagnostics'},
     lualine_c = {{'filename', file_status=true, path=3}},
     lualine_x = {
-      {
-        require("noice.status").message.get,
-        cond = require("noice.status").message.has,
-      },
-      {
-        require("noice.status").mode.get,
-        cond = require("noice.status").mode.has,
-      },
-      {
-        require("noice.status").search.get,
-        cond = require("noice.status").search.has,
-      },
       'encoding', 'fileformat', 'filetype'
     },
     lualine_y = {'progress'},
@@ -851,7 +839,35 @@ EOF
 " noice.nvim
 "-------------------------
 lua << EOF
---require('noice').setup()
+require('noice').setup({
+-- views = {
+--       cmdline_popup = {
+--         border = {
+--           style = "none",
+--           padding = { 2, 3 },
+--         },
+--         filter_options = {},
+--         win_options = {
+--           winhighlight = "NormalFloat:NormalFloat,FloatBorder:FloatBorder",
+--         },
+--       },
+--     },
+  routes = {
+      {
+        filter = {
+          find = "下まで検索したので上に戻ります",
+        },
+        opts = { skip = true },
+      },
+      {
+        filter = {
+          event = "msg_show",
+          kind = "search_count",
+        },
+        opts = { skip = true },
+      },
+  }
+})
 EOF
 
 "-------------------------
@@ -1369,6 +1385,7 @@ hi TSKeyword gui=NONE
 hi TSPunctSpecial guifg=#ffab70
 " floating window
 hi NormalFloat guibg=NONE
+hi FloatBorder guibg=#24292e
 " vim-bookmarks
 highlight BookmarkSign guifg=#157efb
 highlight BookmarkAnnotationSign guifg=#157efb
