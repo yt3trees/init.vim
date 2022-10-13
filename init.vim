@@ -1243,7 +1243,7 @@ endfunction
 "-------------------------
 command! CopyPath call CopyPath()
 function! CopyPath()
-  let @* = expand('%:p:h')
+  let @* = expand('%:p')
   echo 'Copied : ' . @*
 endfunction
 
