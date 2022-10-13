@@ -104,7 +104,8 @@ noremap <A-down> ddp
 inoremap <C-CR> <ESC>o
 inoremap <C-S-CR> <ESC>ko
 " バッファをリストから指定して開く
-nnoremap <C-b> <cmd>call quickui#tools#list_buffer('tabedit')<CR>
+" nnoremap <C-b> <cmd>call quickui#tools#list_buffer('tabedit')<CR>
+nnoremap <C-b> <cmd>Telescope buffers<CR>
 " Telescope
 nnoremap <leader>ff <cmd>Telescope find_files<CR>
 nnoremap <leader>fg <cmd>Telescope live_grep<CR>
