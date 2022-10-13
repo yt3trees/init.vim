@@ -838,6 +838,7 @@ EOF
 "-------------------------
 " noice.nvim
 "-------------------------
+if !exists('g:vscode')
 lua << EOF
 require('noice').setup({
 -- views = {
@@ -869,6 +870,7 @@ require('noice').setup({
   }
 })
 EOF
+endif
 
 "-------------------------
 " vim-sneak
