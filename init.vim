@@ -88,8 +88,10 @@ nnoremap k gk
 vnoremap j gj
 vnoremap k gk
 " Move tab
-noremap <C-l> :tabnext<Enter>
-noremap <C-h> :tabprev<Enter>
+noremap <silent> <C-l> :tabnext<Enter>
+noremap <silent> <C-h> :tabprev<Enter>
+noremap <Tab>  <Cmd>BufferLineCycleNext<CR>
+noremap <S-Tab>  <Cmd>BufferLineCyclePrev<CR>
 " edgemotion
 noremap <C-j> <Plug>(edgemotion-j)
 noremap <C-k> <Plug>(edgemotion-k)
@@ -171,7 +173,7 @@ Plug 'folke/trouble.nvim'
 " スクロールバー
 Plug 'dstein64/nvim-scrollview', { 'branch': 'main' }
 " タブバーの装飾
-Plug 'akinsho/bufferline.nvim', { 'tag': 'v2.*' }
+Plug 'akinsho/bufferline.nvim', { 'tag': 'v3.*' }
 " カーソルが当たった単語をハイライト
 Plug 'RRethy/vim-illuminate'
 " ブックマーク
@@ -423,7 +425,7 @@ cmp.setup({
     })
   })
   -- Setup lspconfig.
-  local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+  local capabilities = require('cmp_nvim_lsp').default_capabilities()
   -- Replace <YOUR_LSP_SERVER> with each lsp server you've enabled.
 --  require('lspconfig')['<YOUR_LSP_SERVER>'].setup {
 --    capabilities = capabilities
@@ -598,9 +600,7 @@ require('mason-lspconfig').setup_handlers({ function(server)
     --   vim.api.nvim_buf_set_keymap(bufnr, 'n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
     --   vim.cmd 'autocmd BufWritePre * lua vim.lsp.buf.formatting_sync(nil, 1000)'
     -- end,
-    capabilities = require('cmp_nvim_lsp').update_capabilities(
-      vim.lsp.protocol.make_client_capabilities()
-    )
+    capabilities = require('cmp_nvim_lsp').default_capabilities()
   }
   require('lspconfig')[server].setup(opt)
 end,
@@ -1384,6 +1384,7 @@ endfunction
 hi LineNr guifg=#6a737d
 hi clear CursorLine
 " TreeSitter
+hi Keyword gui=NONE
 hi TSKeyword gui=NONE
 hi TSPunctSpecial guifg=#ffab70
 " floating window
