@@ -1019,6 +1019,7 @@ call quickui#menu#install('&File', [
             \ [ "&Save\tCtrl+s", ':w'],
             \ [ "Save &As", ':call SaveasFile()' ],
             \ [ "Save All\t:wa", ':wa' ],
+            \ [ "Change&Encode", 'call ChangeEncode()' ],
             \ [ "Rename", 'call RenameCurrentFile()' ],
             \ [ "--", '' ],
             \ [ "Open $&MYVIMRC", ':e $MYVIMRC' ],
@@ -1260,6 +1261,24 @@ augroup numbertoggled
 augroup END
 
 "-------------------------
+" 文字コードを変更して開き直す
+"-------------------------
+function! ChangeEncode()
+lua vim.ui.select({ 'shiftjis', 'utf-8', 'utf-16le' }, {
+\         prompt = 'Select encode:',
+\     }, function(choice)
+\         if choice == 'shiftjis' then
+\             vim.cmd(':e ++enc=shift_jis')
+\         elseif choice == 'utf-8' then
+\             vim.cmd(':e ++enc=utf-8')
+\         elseif choice == 'utf-16le' then
+\             vim.cmd(':e ++enc=utf-16le')
+\         end
+\     end)
+endfunction
+command! ChangeEncode call ChangeEncode()
+
+"-------------------------
 " ビルドインLSPの設定
 "-------------------------
 lua << EOF
@@ -1364,7 +1383,6 @@ local function on_hover()
   end })
 end
 vim.keymap.set('n', 'K', on_hover, opt) -- 変数の情報を表示
-
 EOF
 
 "-------------------------
