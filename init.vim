@@ -201,8 +201,6 @@ Plug 'williamboman/mason.nvim'
 Plug 'williamboman/mason-lspconfig.nvim'
 " 関数のシグネチャヘルプを表示
 Plug 'ray-x/lsp_signature.nvim'
-" lspの状態を表示
-Plug 'j-hui/fidget.nvim'
 " デバッグ
 Plug 'mfussenegger/nvim-dap'
 Plug 'rcarriga/nvim-dap-ui'
@@ -554,6 +552,7 @@ require("nvim-treesitter.configs").setup {
 }
 EOF
 endif
+
 "-------------------------
 " vim-illuminate
 "-------------------------
@@ -687,13 +686,6 @@ EOF
 lua << EOF
 local wk = require("which-key")
 wk.setup()
-EOF
-
-"-------------------------
-" fidget.nvim
-"-------------------------
-lua << EOF
-require"fidget".setup{}
 EOF
 
 "-------------------------
@@ -901,6 +893,17 @@ require('noice').setup({
 --         },
 --       },
 --     },
+  lsp_progress = {
+    enabled = true,
+    -- Lsp Progress is formatted using the builtins for lsp_progress. See config.format.builtin
+    -- See the section on formatting for more details on how to customize.
+    --- @type NoiceFormat|string
+    format = "lsp_progress",
+    --- @type NoiceFormat|string
+    format_done = "lsp_progress_done",
+    throttle = 1000 / 30, -- frequency to update lsp progress message
+    view = "mini",
+  },
   routes = {
       -- 検索結果のmessageを非表示
       {
@@ -1453,15 +1456,15 @@ hi clear CursorLine
 " TreeSitter
 hi Keyword gui=NONE
 if expand('%:e') == 'tsx'
-    hi @tag guifg=#85e89d
-    hi @punctuation.bracket guifg=#ffab70
-    hi @punctuation.delimiter guifg=#c9d1d9
-    hi @variable guifg=#79b8ff
-    hi @property guifg=#c9d1d9
-    hi @tag.attribute guifg=#b392f0
-    hi @tag.delimiter guifg=#c9d1d9
-    hi @parameter guifg=#ffab70
-    hi @type.builtin guifg=#79b8ff 
+  hi @tag guifg=#85e89d
+  hi @punctuation.bracket guifg=#ffab70
+  hi @punctuation.delimiter guifg=#c9d1d9
+  hi @variable guifg=#79b8ff
+  hi @property guifg=#c9d1d9
+  hi @tag.attribute guifg=#b392f0
+  hi @tag.delimiter guifg=#c9d1d9
+  hi @parameter guifg=#ffab70
+  hi @type.builtin guifg=#79b8ff 
 endif
 " floating window
 hi NormalFloat guibg=NONE
