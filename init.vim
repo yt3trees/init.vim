@@ -1452,13 +1452,25 @@ hi LineNr guifg=#6a737d
 hi clear CursorLine
 " TreeSitter
 hi Keyword gui=NONE
-hi TSKeyword gui=NONE
-hi TSPunctSpecial guifg=#ffab70
+if expand('%:e') == 'tsx'
+    hi @tag guifg=#85e89d
+    hi @punctuation.bracket guifg=#ffab70
+    hi @punctuation.delimiter guifg=#c9d1d9
+    hi @variable guifg=#79b8ff
+    hi @property guifg=#c9d1d9
+    hi @tag.attribute guifg=#b392f0
+    hi @tag.delimiter guifg=#c9d1d9
+    hi @parameter guifg=#ffab70
+    hi @type.builtin guifg=#79b8ff 
+endif
 " floating window
 hi NormalFloat guibg=NONE
 hi FloatBorder guibg=#24292e
 " vim-bookmarks
-highlight BookmarkSign guifg=#157efb
-highlight BookmarkAnnotationSign guifg=#157efb
-highlight BookmarkLine guifg=#157efb
-highlight BookmarkAnnotationLine guifg=#157efb
+hi BookmarkSign guifg=#157efb
+hi BookmarkAnnotationSign guifg=#157efb
+hi BookmarkLine guifg=#157efb
+hi BookmarkAnnotationLine guifg=#157efb
+" noice.nvim
+" hi NoiceCmdlinePopupBorder guifg=#79b8ff
+" hi NoiceCmdlinePopupBorderSearch guifg=#ffab70
