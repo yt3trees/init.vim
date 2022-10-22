@@ -165,6 +165,7 @@ Plug 'nvim-telescope/telescope-file-browser.nvim'
 " シンタックスハイライト
 Plug 'nvim-treesitter/nvim-treesitter',{'merged': ':0'}
 Plug 'nvim-treesitter/playground'
+Plug 'p00f/nvim-ts-rainbow'
 " ステータスライン
 Plug 'nvim-lualine/lualine.nvim'
 Plug 'kyazdani42/nvim-web-devicons'
@@ -518,6 +519,40 @@ require'nvim-treesitter.configs'.setup {
 EOF
 endif
 
+"-------------------------
+" nvim-ts-rainbow
+"-------------------------
+lua << EOF
+require("nvim-treesitter.configs").setup {
+  highlight = {
+      -- ...
+  },
+  -- ...
+  rainbow = {
+    enable = true,
+    -- disable = { "jsx", "cpp" }, list of languages you want to disable the plugin for
+    extended_mode = false, -- Also highlight non-bracket delimiters like html tags, boolean or table: lang -> boolean
+    max_file_lines = 5000, -- Do not enable for files with more than n lines, int
+    colors = {
+      "#79b8ff",
+      "#ffab70",
+      "#b392f0",
+    }
+    -- termcolors = {} -- table of colour name strings
+  }
+}
+EOF
+
+" vscodeの場合はts-rainbowを無効化する
+if exists('g:vscode')
+lua << EOF
+require("nvim-treesitter.configs").setup {
+  rainbow = {
+    enable = false,
+  }
+}
+EOF
+endif
 "-------------------------
 " vim-illuminate
 "-------------------------
