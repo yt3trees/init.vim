@@ -96,7 +96,8 @@ noremap <S-Tab>  <Cmd>BufferLineCyclePrev<CR>
 noremap <C-j> <Plug>(edgemotion-j)
 noremap <C-k> <Plug>(edgemotion-k)
 " release select
-nnoremap <Esc><Esc> :nohl<CR>
+" nnoremap <Esc><Esc> :nohl<CR>
+nnoremap <silent> <Esc><Esc> :let @/=""<CR>
 " ターミナルモードから抜ける
 :tnoremap <Esc> <C-\><C-n>
 " 行を入れ換える
@@ -901,15 +902,14 @@ require('noice').setup({
 --       },
 --     },
   routes = {
-      -- 検索のポップアップを非表示
+      -- 検索結果のmessageを非表示
       {
         filter = {
-          event = "msg_show",
-          ["not"] = { kind = "search_count" },
+          find = "%[%d*/%d*%]",
         },
         opts = { skip = true },
       },
-      -- -- virtual textを非表示
+      -- virtual textを非表示
       {
         filter = {
           event = "msg_show",
