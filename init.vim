@@ -796,6 +796,17 @@ EOF
 " lualine.nvim
 "-------------------------
 lua << EOF
+function searchCount()
+  local search = vim.fn.searchcount({maxcount = 0}) -- maxcount = 0 makes the number not be capped at 99
+  local searchCurrent = search.current
+  local searchTotal = search.total
+  if searchCurrent > 0 then
+    return "/"..vim.fn.getreg("/").." ["..searchCurrent.."/"..searchTotal.."]"
+  else
+    return ""
+  end
+end
+
 require('lualine').setup {
   options = {
     icons_enabled = true,
@@ -820,7 +831,7 @@ require('lualine').setup {
     lualine_b = {'branch', 'diff', 'diagnostics'},
     lualine_c = {{'filename', file_status=true, path=3}},
     lualine_x = {
-      'encoding', 'fileformat', 'filetype'
+      {searchCount},'encoding', 'fileformat', 'filetype'
     },
     lualine_y = {'progress'},
     lualine_z = {'location'}
@@ -890,12 +901,15 @@ require('noice').setup({
 --       },
 --     },
   routes = {
+      -- 検索のポップアップを非表示
       {
         filter = {
-          find = "下まで検索したので上に戻ります",
+          event = "msg_show",
+          ["not"] = { kind = "search_count" },
         },
         opts = { skip = true },
       },
+      -- -- virtual textを非表示
       {
         filter = {
           event = "msg_show",
