@@ -32,7 +32,7 @@ set nowrap
 " バッファ内で扱う文字コード(文字列)
 set encoding=utf-8
 " 読み込む文字コード
-set fileencodings=utf-8,utf-16le,sjis,cp932
+set fileencodings=utf-8,utf-16le,cp932
 " windowの上下10行をscrolloffに設定
 set scrolloff=10
 " フォントを設定
@@ -1316,11 +1316,11 @@ augroup END
 " 文字コードを変更して開き直す
 "-------------------------
 function! ChangeEncode()
-lua vim.ui.select({ 'shiftjis', 'utf-8', 'utf-16le' }, {
+lua vim.ui.select({ 'cp932', 'utf-8', 'utf-16le' }, {
 \         prompt = 'Select encode:',
 \     }, function(choice)
-\         if choice == 'shiftjis' then
-\             vim.cmd(':e ++enc=shift_jis')
+\         if choice == 'cp932' then
+\             vim.cmd(':e ++enc=cp932')
 \         elseif choice == 'utf-8' then
 \             vim.cmd(':e ++enc=utf-8')
 \         elseif choice == 'utf-16le' then
@@ -1453,8 +1453,11 @@ endfunction
 " 行番号
 hi LineNr guifg=#6a737d
 hi clear CursorLine
+" ps1
+hi ps1Variable guifg=#c9d1d9
 " TreeSitter
 hi Keyword gui=NONE
+hi @punctuation.special guifg=#ffab70
 if expand('%:e') == 'tsx'
   hi @tag guifg=#85e89d
   hi @punctuation.bracket guifg=#ffab70
