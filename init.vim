@@ -1331,6 +1331,13 @@ endfunction
 command! ChangeEncode call ChangeEncode()
 
 "-------------------------
+" バッファの表示状態を自動で保存する
+"-------------------------
+autocmd BufWritePost * if expand('%') != '' && &buftype !~ 'nofile' | mkview | endif
+autocmd BufRead * if expand('%') != '' && &buftype !~ 'nofile' | silent loadview | endif
+set viewoptions-=options
+
+"-------------------------
 " ビルドインLSPの設定
 "-------------------------
 lua << EOF
