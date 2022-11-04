@@ -268,9 +268,9 @@ hi LspReferenceText gui=underline
 autocmd VimEnter * hi LspReferenceText cterm=inverse gui=inverse
 autocmd VimEnter * hi LspReferenceRead cterm=inverse gui=inverse
 autocmd VimEnter * hi LspReferenceWrite cterm=inverse gui=inverse
-hi link IlluminatedWordText Visual
-hi link IlluminatedWordRead Visual
-hi link IlluminatedWordWrite Visual
+hi IlluminatedWordText guibg=#294247
+hi IlluminatedWordRead guibg=#294247
+hi IlluminatedWordWrite guibg=#294247
 
 "-------------------------
 " zenhan
