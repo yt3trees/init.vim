@@ -39,6 +39,8 @@ set scrolloff=10
 set guifont=Iosevka\ Custom\ RD:h11
 " ターミナルでも True Color を使えるようにする
 set termguicolors
+" 補完候補の表示数
+set pumheight=10
 " ポップアップメニューを半透明化
 set pumblend=10
 " 不可視文字の可視化
@@ -54,6 +56,12 @@ set tabstop=4
 set smartindent
 " タブをスペースに置き換える
 set expandtab
+" 矩形選択で仮想編集を有効化
+set virtualedit+=block
+" 行をまたいでカーソル移動できるようにする
+set whichwrap=b,s,h,l,<,>,[,],~
+" インサートモードに入る時に自動でコメントアウトされないようにする
+autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 
 
 "==================================================
