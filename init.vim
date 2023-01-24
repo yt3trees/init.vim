@@ -1290,7 +1290,7 @@ endfunction
 "-------------------------
 " Markdownのチェックボックスをトグル
 "-------------------------
-autocmd BufNewFile,BufRead *.md nnoremap <leader>c :ToggleMarkdownCheckbox<CR>
+autocmd BufNewFile,BufRead *.md nnoremap <A-c> :ToggleMarkdownCheckbox<CR>
 command! ToggleMarkdownCheckbox call s:toggle_checkbox()
 function! s:toggle_checkbox()
   let rowText = getline(line('.'))
