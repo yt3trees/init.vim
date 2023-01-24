@@ -234,7 +234,7 @@ Plug 'goolord/alpha-nvim'
 " AI補完
 " Plug 'tzachar/cmp-tabnine', { 'do': 'powershell ./install.ps1' }
 Plug 'github/copilot.vim'
-Plug 'Exafunction/codeium.vim'
+" Plug 'Exafunction/codeium.vim'
 " 補完時にアイコンを表示
 Plug 'onsails/lspkind.nvim'
 " 色コード部分に色を付与
@@ -336,7 +336,7 @@ local source_mapping = {
         nvim_lsp    = "[LSP]",
         nvim_lua    = "[Lua]",
         vsnip       = "[Vsnip]",
-        cmp_tabnine = "[TN]",
+        -- cmp_tabnine = "[TN]",
         path        = "[Path]",
         git         = "[Git]",
         cmdline     = "[Cmdline]",
@@ -389,7 +389,7 @@ cmp.setup({
       { name = 'path' },
       { name = 'git' },
       { name = 'cmdline' },
-      { name = 'cmp_tabnine' },
+      -- { name = 'cmp_tabnine' },
     }),
     formatting = {
     format = function(entry, vim_item)
@@ -440,20 +440,20 @@ cmp.setup({
 --    capabilities = capabilities
 --  }
 
-local tabnine = require('cmp_tabnine.config')
-tabnine.setup({
-    max_lines = 1000,
-    max_num_results = 20,
-    sort = true,
-    run_on_every_keystroke = true,
-    snippet_placeholder = '..',
-    ignored_file_types = { 
-        -- default is not to ignore
-        -- uncomment to ignore in lua:
-        -- lua = true
-    },
-    show_prediction_strength = false
-})
+-- local tabnine = require('cmp_tabnine.config')
+-- tabnine.setup({
+--     max_lines = 1000,
+--     max_num_results = 20,
+--     sort = true,
+--     run_on_every_keystroke = true,
+--     snippet_placeholder = '..',
+--     ignored_file_types = { 
+--         -- default is not to ignore
+--         -- uncomment to ignore in lua:
+--         -- lua = true
+--     },
+--     show_prediction_strength = false
+-- })
 EOF
 
 "-------------------------
