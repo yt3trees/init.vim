@@ -39,6 +39,8 @@ set scrolloff=10
 set guifont=Iosevka\ Custom\ RD:h11
 " ターミナルでも True Color を使えるようにする
 set termguicolors
+" ステータスラインを1つにする
+set laststatus=3
 " 補完候補の表示数
 set pumheight=10
 " ポップアップメニューを半透明化
@@ -821,7 +823,7 @@ require('lualine').setup {
     },
     ignore_focus = {},
     always_divide_middle = true,
-    globalstatus = false,
+    globalstatus = true,
     refresh = {
       statusline = 1000,
       tabline = 1000,
