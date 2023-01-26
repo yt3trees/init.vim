@@ -132,6 +132,9 @@ nmap s <Plug>Sneak_s
 nmap S <Plug>Sneak_S
 nmap f <Plug>Sneak_f
 nmap F <Plug>Sneak_F
+" ラベルを付与してカーソル移動
+nmap <silent> <Leader><Leader> :HopWord<CR>
+xmap <silent> <Leader><Leader> :HopWord<CR>
 " UndoTreeを表示
 nnoremap <leader>u :UndotreeToggle<CR>
 " treesitter playground
@@ -247,6 +250,8 @@ Plug 'MunifTanjim/nui.nvim'
 Plug 's1n7ax/nvim-window-picker'
 " 検索文字に移動
 Plug 'justinmk/vim-sneak'
+" ラベルを付与してカーソル移動
+Plug 'phaazon/hop.nvim'
 " マルチカーソル
 Plug 'mg979/vim-visual-multi', {'branch': 'master'}
 " fで飛べる単語を着色
@@ -946,6 +951,13 @@ augroup ApplyHighlight
 augroup end
 
 "-------------------------
+" hop.nvim
+"-------------------------
+lua << EOF
+  require('hop').setup()
+EOF
+
+"-------------------------
 " APZelos/blamer.nvim
 "-------------------------
 let g:blamer_enabled = 1
@@ -1189,7 +1201,7 @@ function! OpenSettingHi()
 endfunction
 
 " hit space twice to open menu
-noremap <silent> <space><space> :call quickui#menu#open()<CR>
+noremap <silent> <Leader>t :call quickui#menu#open()<CR>
 
 " Custom Theme
 if v:vim_did_enter
